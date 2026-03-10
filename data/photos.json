@@ -1,0 +1,244 @@
+{
+    "photos": [
+        {
+            "id": 1,
+            "title": "晨光中的少女",
+            "category": "portrait",
+            "thumbnail": "https://via.placeholder.com/400x300/667eea/ffffff?text=Portrait+1",
+            "fullImage": "https://via.placeholder.com/1200x800/667eea/ffffff?text=Portrait+1",
+            "webpThumbnail": "https://via.placeholder.com/400x300/667eea/ffffff?text=Portrait+1",
+            "webpFull": "https://via.placeholder.com/1200x800/667eea/ffffff?text=Portrait+1",
+            "blurThumbnail": "https://via.placeholder.com/40x30/667eea/ffffff?text=P1",
+            "metadata": {
+                "camera": "Sony A7R IV",
+                "lens": "85mm f/1.4 GM",
+                "aperture": "f/1.8",
+                "shutter": "1/250s",
+                "iso": "100",
+                "location": "杭州西湖",
+                "date": "2024-03-15",
+                "description": "清晨的柔和光线勾勒出模特优雅的轮廓，大光圈营造出梦幻般的背景虚化效果。"
+            }
+        },
+        {
+            "id": 2,
+            "title": "黄山云海",
+            "category": "landscape",
+            "thumbnail": "https://via.placeholder.com/400x300/764ba2/ffffff?text=Landscape+1",
+            "fullImage": "https://via.placeholder.com/1200x800/764ba2/ffffff?text=Landscape+1",
+            "webpThumbnail": "https://via.placeholder.com/400x300/764ba2/ffffff?text=Landscape+1",
+            "webpFull": "https://via.placeholder.com/1200x800/764ba2/ffffff?text=Landscape+1",
+            "blurThumbnail": "https://via.placeholder.com/40x30/764ba2/ffffff?text=L1",
+            "metadata": {
+                "camera": "Sony A7R IV",
+                "lens": "16-35mm f/2.8 GM",
+                "aperture": "f/11",
+                "shutter": "1/60s",
+                "iso": "200",
+                "location": "安徽黄山",
+                "date": "2024-02-20",
+                "description": "日出时分，云海翻涌，金色的阳光穿透云层，照亮了远处的山峰。"
+            }
+        },
+        {
+            "id": 3,
+            "title": "老街手艺人",
+            "category": "documentary",
+            "thumbnail": "https://via.placeholder.com/400x300/f093fb/ffffff?text=Documentary+1",
+            "fullImage": "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Documentary+1",
+            "webpThumbnail": "https://via.placeholder.com/400x300/f093fb/ffffff?text=Documentary+1",
+            "webpFull": "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Documentary+1",
+            "blurThumbnail": "https://via.placeholder.com/40x30/f093fb/ffffff?text=D1",
+            "metadata": {
+                "camera": "Fujifilm X-T4",
+                "lens": "35mm f/1.4",
+                "aperture": "f/2.8",
+                "shutter": "1/125s",
+                "iso": "400",
+                "location": "苏州平江路",
+                "date": "2024-01-10",
+                "description": "记录传统手工艺人的专注神情，展现匠人精神的传承与坚守。"
+            }
+        },
+        {
+            "id": 4,
+            "title": "城市几何",
+            "category": "blackwhite",
+            "thumbnail": "https://via.placeholder.com/400x300/333333/ffffff?text=B&W+1",
+            "fullImage": "https://via.placeholder.com/1200x800/333333/ffffff?text=B&W+1",
+            "webpThumbnail": "https://via.placeholder.com/400x300/333333/ffffff?text=B&W+1",
+            "webpFull": "https://via.placeholder.com/1200x800/333333/ffffff?text=B&W+1",
+            "blurThumbnail": "https://via.placeholder.com/40x30/333333/ffffff?text=B1",
+            "metadata": {
+                "camera": "Leica M10",
+                "lens": "50mm f/2",
+                "aperture": "f/8",
+                "shutter": "1/500s",
+                "iso": "100",
+                "location": "上海陆家嘴",
+                "date": "2024-03-01",
+                "description": "通过黑白影调强调建筑的线条与几何美感，展现都市的冷峻与现代感。"
+            }
+        },
+        {
+            "id": 5,
+            "title": "舞者",
+            "category": "portrait",
+            "thumbnail": "https://via.placeholder.com/400x300/667eea/ffffff?text=Portrait+2",
+            "fullImage": "https://via.placeholder.com/1200x800/667eea/ffffff?text=Portrait+2",
+            "webpThumbnail": "https://via.placeholder.com/400x300/667eea/ffffff?text=Portrait+2",
+            "webpFull": "https://via.placeholder.com/1200x800/667eea/ffffff?text=Portrait+2",
+            "blurThumbnail": "https://via.placeholder.com/40x30/667eea/ffffff?text=P2",
+            "metadata": {
+                "camera": "Canon EOS R5",
+                "lens": "70-200mm f/2.8",
+                "aperture": "f/2.8",
+                "shutter": "1/1000s",
+                "iso": "800",
+                "location": "北京舞蹈学院",
+                "date": "2024-02-28",
+                "description": "捕捉舞者跃起的瞬间，展现力量与优雅的完美结合。"
+            }
+        },
+        {
+            "id": 6,
+            "title": "星空下的帐篷",
+            "category": "landscape",
+            "thumbnail": "https://via.placeholder.com/400x300/764ba2/ffffff?text=Landscape+2",
+            "fullImage": "https://via.placeholder.com/1200x800/764ba2/ffffff?text=Landscape+2",
+            "webpThumbnail": "https://via.placeholder.com/400x300/764ba2/ffffff?text=Landscape+2",
+            "webpFull": "https://via.placeholder.com/1200x800/764ba2/ffffff?text=Landscape+2",
+            "blurThumbnail": "https://via.placeholder.com/40x30/764ba2/ffffff?text=L2",
+            "metadata": {
+                "camera": "Nikon Z7 II",
+                "lens": "14-24mm f/2.8",
+                "aperture": "f/2.8",
+                "shutter": "25s",
+                "iso": "3200",
+                "location": "西藏纳木错",
+                "date": "2023-11-15",
+                "description": "银河横跨夜空，帐篷的温暖灯光与璀璨星空形成鲜明对比。"
+            }
+        },
+        {
+            "id": 7,
+            "title": "菜市场的早晨",
+            "category": "documentary",
+            "thumbnail": "https://via.placeholder.com/400x300/f093fb/ffffff?text=Documentary+2",
+            "fullImage": "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Documentary+2",
+            "webpThumbnail": "https://via.placeholder.com/400x300/f093fb/ffffff?text=Documentary+2",
+            "webpFull": "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Documentary+2",
+            "blurThumbnail": "https://via.placeholder.com/40x30/f093fb/ffffff?text=D2",
+            "metadata": {
+                "camera": "Sony A7C",
+                "lens": "28mm f/2",
+                "aperture": "f/4",
+                "shutter": "1/160s",
+                "iso": "640",
+                "location": "成都青羊小区菜市场",
+                "date": "2024-03-10",
+                "description": "记录市井生活的烟火气息，展现普通人的日常与坚韧。"
+            }
+        },
+        {
+            "id": 8,
+            "title": "雨后的街道",
+            "category": "blackwhite",
+            "thumbnail": "https://via.placeholder.com/400x300/333333/ffffff?text=B&W+2",
+            "fullImage": "https://via.placeholder.com/1200x800/333333/ffffff?text=B&W+2",
+            "webpThumbnail": "https://via.placeholder.com/400x300/333333/ffffff?text=B&W+2",
+            "webpFull": "https://via.placeholder.com/1200x800/333333/ffffff?text=B&W+2",
+            "blurThumbnail": "https://via.placeholder.com/40x30/333333/ffffff?text=B2",
+            "metadata": {
+                "camera": "Ricoh GR III",
+                "lens": "18.3mm f/2.8",
+                "aperture": "f/5.6",
+                "shutter": "1/250s",
+                "iso": "200",
+                "location": "香港中环",
+                "date": "2024-01-25",
+                "description": "雨后街道的倒影与行人剪影，营造出电影般的氛围感。"
+            }
+        },
+        {
+            "id": 9,
+            "title": "眼神",
+            "category": "portrait",
+            "thumbnail": "https://via.placeholder.com/400x300/667eea/ffffff?text=Portrait+3",
+            "fullImage": "https://via.placeholder.com/1200x800/667eea/ffffff?text=Portrait+3",
+            "webpThumbnail": "https://via.placeholder.com/400x300/667eea/ffffff?text=Portrait+3",
+            "webpFull": "https://via.placeholder.com/1200x800/667eea/ffffff?text=Portrait+3",
+            "blurThumbnail": "https://via.placeholder.com/40x30/667eea/ffffff?text=P3",
+            "metadata": {
+                "camera": "Sony A7R IV",
+                "lens": "135mm f/1.8 GM",
+                "aperture": "f/1.8",
+                "shutter": "1/400s",
+                "iso": "100",
+                "location": "工作室",
+                "date": "2024-03-20",
+                "description": "特写的眼神传递出丰富的情感，展现人物内心的世界。"
+            }
+        },
+        {
+            "id": 10,
+            "title": "秋日森林",
+            "category": "landscape",
+            "thumbnail": "https://via.placeholder.com/400x300/764ba2/ffffff?text=Landscape+3",
+            "fullImage": "https://via.placeholder.com/1200x800/764ba2/ffffff?text=Landscape+3",
+            "webpThumbnail": "https://via.placeholder.com/400x300/764ba2/ffffff?text=Landscape+3",
+            "webpFull": "https://via.placeholder.com/1200x800/764ba2/ffffff?text=Landscape+3",
+            "blurThumbnail": "https://via.placeholder.com/40x30/764ba2/ffffff?text=L3",
+            "metadata": {
+                "camera": "Canon EOS R5",
+                "lens": "24-70mm f/2.8",
+                "aperture": "f/8",
+                "shutter": "1/30s",
+                "iso": "100",
+                "location": "新疆喀纳斯",
+                "date": "2023-10-05",
+                "description": "金秋时节，层林尽染，阳光穿透树叶洒下斑驳光影。"
+            }
+        },
+        {
+            "id": 11,
+            "title": "传统戏曲",
+            "category": "documentary",
+            "thumbnail": "https://via.placeholder.com/400x300/f093fb/ffffff?text=Documentary+3",
+            "fullImage": "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Documentary+3",
+            "webpThumbnail": "https://via.placeholder.com/400x300/f093fb/ffffff?text=Documentary+3",
+            "webpFull": "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Documentary+3",
+            "blurThumbnail": "https://via.placeholder.com/40x30/f093fb/ffffff?text=D3",
+            "metadata": {
+                "camera": "Fujifilm GFX 100S",
+                "lens": "110mm f/2",
+                "aperture": "f/2.8",
+                "shutter": "1/200s",
+                "iso": "400",
+                "location": "西安易俗社",
+                "date": "2024-02-15",
+                "description": "记录传统戏曲演员后台准备的瞬间，展现传统文化的魅力。"
+            }
+        },
+        {
+            "id": 12,
+            "title": "光影交错",
+            "category": "blackwhite",
+            "thumbnail": "https://via.placeholder.com/400x300/333333/ffffff?text=B&W+3",
+            "fullImage": "https://via.placeholder.com/1200x800/333333/ffffff?text=B&W+3",
+            "webpThumbnail": "https://via.placeholder.com/400x300/333333/ffffff?text=B&W+3",
+            "webpFull": "https://via.placeholder.com/1200x800/333333/ffffff?text=B&W+3",
+            "blurThumbnail": "https://via.placeholder.com/40x30/333333/ffffff?text=B3",
+            "metadata": {
+                "camera": "Leica Q2 Monochrom",
+                "lens": "28mm f/1.7",
+                "aperture": "f/4",
+                "shutter": "1/500s",
+                "iso": "400",
+                "location": "北京798艺术区",
+                "date": "2024-03-05",
+                "description": "利用建筑结构创造的光影对比，展现抽象的几何美感。"
+            }
+        }
+    ]
+}

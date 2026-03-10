@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>管理后台 | 摄影作品展示</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- 访问控制遮罩 -->
+    <div class="access-control" id="access-control">
+        <div class="access-modal">
+            <h2>🔒 管理后台</h2>
+            <p>此页面仅限本地访问</p>
+            <p class="access-hint">如需访问，请在本地服务器运行</p>
+            <a href="index.html" class="back-link">返回首页</a>
+        </div>
+    </div>
+
+    <!-- 主应用 -->
+    <div class="admin-app" id="admin-app" hidden>
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="sidebar-title">⚙️ 管理后台</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#home-config" class="nav-item active" data-section="home-config">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">首页配置</span>
+                </a>
+                <a href="#theme-config" class="nav-item" data-section="theme-config">
+                    <span class="nav-icon">🎨</span>
+                    <span class="nav-text">主题配置</span>
+                </a>
+                <a href="#photos-manage" class="nav-item" data-section="photos-manage">
+                    <span class="nav-icon">📷</span>
+                    <span class="nav-text">作品管理</span>
+                </a>
+                <a href="#import-export" class="nav-item" data-section="import-export">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-text">导入导出</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="index.html" class="view-site-link" target="_blank">
+                    <span>🌐</span> 查看网站
+                </a>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部工具栏 -->
+            <header class="content-header">
+                <h2 class="content-title" id="section-title">首页配置</h2>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="btn-reset">重置</button>
+                    <button class="btn btn-primary" id="btn-save">保存配置</button>
+                </div>
+            </header>
+
+            <!-- 内容区域 -->
+            <div class="content-body">
+                <!-- 首页配置 -->
+                <section class="config-section" id="home-config">
+                    <div class="config-card">
+                        <h3 class="card-title">网站标题</h3>
+                        <div class="form-group">
+                            <label for="hero-title-line1">标题第一行</label>
+                            <input type="text" id="hero-title-line1" class="form-input" placeholder="光影之间">
+                        </div>
+                        <div class="form-group">
+                            <label for="hero-title-line2">标题第二行</label>
+                            <input type="text" id="hero-title-line2" class="form-input" placeholder="定格美好">
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">副标题与描述</h3>
+                        <div class="form-group">
+                            <label for="hero-subtitle">副标题</label>
+                            <input type="text" id="hero-subtitle" class="form-input" placeholder="用镜头记录世界的每一个精彩瞬间">
+                        </div>
+                        <div class="form-group">
+                            <label for="hero-description">描述文字</label>
+                            <textarea id="hero-description" class="form-textarea" rows="3" placeholder="专注于人像、风光、纪实与黑白摄影..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">按钮配置</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="btn-primary-text">主按钮文本</label>
+                                <input type="text" id="btn-primary-text" class="form-input" placeholder="浏览作品">
+                            </div>
+                            <div class="form-group">
+                                <label for="btn-primary-link">主按钮链接</label>
+                                <input type="text" id="btn-primary-link" class="form-input" placeholder="#portfolio">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="btn-secondary-text">次按钮文本</label>
+                                <input type="text" id="btn-secondary-text" class="form-input" placeholder="联系我">
+                            </div>
+                            <div class="form-group">
+                                <label for="btn-secondary-link">次按钮链接</label>
+                                <input type="text" id="btn-secondary-link" class="form-input" placeholder="#contact">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">品牌信息</h3>
+                        <div class="form-group">
+                            <label for="brand-name">品牌名称</label>
+                            <input type="text" id="brand-name" class="form-input" placeholder="光影之间">
+                        </div>
+                        <div class="form-group">
+                            <label for="footer-copyright">版权信息</label>
+                            <input type="text" id="footer-copyright" class="form-input" placeholder="© 2024 光影之间. 保留所有权利.">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 主题配置 -->
+                <section class="config-section" id="theme-config" hidden>
+                    <div class="config-card">
+                        <h3 class="card-title">主题色配置</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="color-accent">主题色</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="color-accent" class="color-input" value="#667eea">
+                                    <input type="text" id="color-accent-text" class="form-input" value="#667eea">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="color-accent-hover">悬停色</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="color-accent-hover" class="color-input" value="#5a67d8">
+                                    <input type="text" id="color-accent-hover-text" class="form-input" value="#5a67d8">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">首屏背景</h3>
+                        <div class="form-group">
+                            <label>背景类型</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="bg-type" value="gradient" checked>
+                                    <span>渐变色</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="bg-type" value="image">
+                                    <span>图片</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="gradient-config" id="gradient-config">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="gradient-start">起始色</label>
+                                    <div class="color-input-wrapper">
+                                        <input type="color" id="gradient-start" class="color-input" value="#667eea">
+                                        <input type="text" id="gradient-start-text" class="form-input" value="#667eea">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gradient-mid">中间色</label>
+                                    <div class="color-input-wrapper">
+                                        <input type="color" id="gradient-mid" class="color-input" value="#764ba2">
+                                        <input type="text" id="gradient-mid-text" class="form-input" value="#764ba2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gradient-end">结束色</label>
+                                    <div class="color-input-wrapper">
+                                        <input type="color" id="gradient-end" class="color-input" value="#f093fb">
+                                        <input type="text" id="gradient-end-text" class="form-input" value="#f093fb">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gradient-preview" id="gradient-preview"></div>
+                        </div>
+                        <div class="image-config" id="image-config" hidden>
+                            <div class="form-group">
+                                <label for="bg-image-url">图片URL</label>
+                                <input type="text" id="bg-image-url" class="form-input" placeholder="https://example.com/image.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">暗黑模式配置</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dark-bg-primary">背景色</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="dark-bg-primary" class="color-input" value="#1a1a1a">
+                                    <input type="text" id="dark-bg-primary-text" class="form-input" value="#1a1a1a">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="dark-text-primary">文字色</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="dark-text-primary" class="color-input" value="#f8f9fa">
+                                    <input type="text" id="dark-text-primary-text" class="form-input" value="#f8f9fa">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 作品管理 -->
+                <section class="config-section" id="photos-manage" hidden>
+                    <div class="config-card">
+                        <div class="card-header">
+                            <h3 class="card-title">作品列表</h3>
+                            <button class="btn btn-primary btn-sm" id="btn-add-photo">+ 添加作品</button>
+                        </div>
+                        <div class="photos-list" id="photos-list">
+                            <!-- 作品列表将通过JS动态生成 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 导入导出 -->
+                <section class="config-section" id="import-export" hidden>
+                    <div class="config-card">
+                        <h3 class="card-title">导出配置</h3>
+                        <p class="card-desc">将当前配置导出为JSON文件，方便备份或迁移。</p>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="btn-export-all">导出全部配置</button>
+                            <button class="btn btn-secondary" id="btn-export-photos">仅导出作品数据</button>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">导入配置</h3>
+                        <p class="card-desc">从JSON文件导入配置，将覆盖当前设置。</p>
+                        <div class="file-upload-area" id="file-upload-area">
+                            <input type="file" id="import-file" accept=".json" hidden>
+                            <div class="upload-hint">
+                                <span class="upload-icon">📁</span>
+                                <p>点击或拖拽文件到此处</p>
+                                <p class="upload-format">支持 .json 格式</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">重置配置</h3>
+                        <p class="card-desc">重置所有配置到默认值，此操作不可撤销。</p>
+                        <button class="btn btn-danger" id="btn-reset-all">重置所有配置</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- 作品编辑模态框 -->
+        <div class="modal" id="photo-modal" hidden>
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">添加作品</h3>
+                    <button class="modal-close" id="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="photo-form">
+                        <input type="hidden" id="photo-id">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photo-title">作品标题 *</label>
+                                <input type="text" id="photo-title" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-category">分类 *</label>
+                                <select id="photo-category" class="form-select" required>
+                                    <option value="portrait">人像</option>
+                                    <option value="landscape">风光</option>
+                                    <option value="documentary">纪实</option>
+                                    <option value="blackwhite">黑白</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photo-thumbnail">缩略图URL *</label>
+                                <input type="text" id="photo-thumbnail" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-fullimage">高清图URL *</label>
+                                <input type="text" id="photo-fullimage" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-description">作品描述</label>
+                            <textarea id="photo-description" class="form-textarea" rows="2"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photo-camera">相机</label>
+                                <input type="text" id="photo-camera" class="form-input" placeholder="Sony A7R IV">
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-lens">镜头</label>
+                                <input type="text" id="photo-lens" class="form-input" placeholder="85mm f/1.4 GM">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photo-aperture">光圈</label>
+                                <input type="text" id="photo-aperture" class="form-input" placeholder="f/1.8">
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-shutter">快门</label>
+                                <input type="text" id="photo-shutter" class="form-input" placeholder="1/250s">
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-iso">ISO</label>
+                                <input type="text" id="photo-iso" class="form-input" placeholder="100">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photo-location">拍摄地点</label>
+                                <input type="text" id="photo-location" class="form-input" placeholder="杭州西湖">
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-date">拍摄日期</label>
+                                <input type="date" id="photo-date" class="form-input">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="btn-modal-cancel">取消</button>
+                    <button class="btn btn-primary" id="btn-modal-save">保存</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast 提示 -->
+        <div class="toast-container" id="toast-container"></div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="个人摄影作品展示网站 - 展示人像、风光、纪实、黑白摄影作品">
+    <meta name="keywords" content="摄影, 作品集, 人像摄影, 风光摄影, 纪实摄影, 黑白摄影">
+    <meta name="author" content="摄影师">
+    
+    <!-- 预连接和DNS预解析优化 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <title>光影之间 | 个人摄影作品展示</title>
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="site-header" id="site-header">
+        <nav class="main-nav" aria-label="主导航">
+            <div class="nav-brand">
+                <a href="#home" class="brand-link">
+                    <span class="brand-icon">📷</span>
+                    <span class="brand-text" id="brand-name">光影之间</span>
+                </a>
+            </div>
+            
+            <!-- PC端导航菜单 -->
+            <ul class="nav-menu" id="nav-menu" role="menubar">
+                <li role="none"><a href="#home" class="nav-link active" role="menuitem">首页</a></li>
+                <li role="none"><a href="#portfolio" class="nav-link" role="menuitem">作品集</a></li>
+                <li role="none"><a href="#about" class="nav-link" role="menuitem">关于我</a></li>
+                <li role="none"><a href="#contact" class="nav-link" role="menuitem">联系方式</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <!-- 主题切换按钮 -->
+                <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" title="切换亮色/暗黑模式">
+                    <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                
+                <!-- 移动端汉堡菜单按钮 -->
+                <button class="menu-toggle" id="menu-toggle" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- 移动端侧边栏导航 -->
+        <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+        <aside class="mobile-nav" id="mobile-nav" aria-hidden="true">
+            <div class="mobile-nav-header">
+                <span class="mobile-nav-title">导航菜单</span>
+                <button class="mobile-nav-close" id="mobile-nav-close" aria-label="关闭菜单">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <ul class="mobile-nav-menu">
+                <li><a href="#home" class="mobile-nav-link active">首页</a></li>
+                <li><a href="#portfolio" class="mobile-nav-link">作品集</a></li>
+                <li><a href="#about" class="mobile-nav-link">关于我</a></li>
+                <li><a href="#contact" class="mobile-nav-link">联系方式</a></li>
+            </ul>
+        </aside>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="site-main">
+        <!-- 首屏区域 -->
+        <section id="home" class="hero-section" aria-labelledby="hero-title">
+            <div class="hero-background">
+                <!-- SVG 占位背景 -->
+                <svg class="hero-bg-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="noise">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                            <feColorMatrix type="saturate" values="0"/>
+                            <feBlend in="SourceGraphic" mode="overlay"/>
+                        </filter>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#heroGradient)"/>
+                    <rect width="100%" height="100%" fill="#000" opacity="0.1" filter="url(#noise)"/>
+                </svg>
+            </div>
+            
+            <figure class="hero-content">
+                <figcaption class="hero-caption">
+                    <h1 id="hero-title" class="hero-title">
+                        <span class="hero-title-line" id="hero-title-line1">光影之间</span>
+                        <span class="hero-title-line" id="hero-title-line2">定格美好</span>
+                    </h1>
+                    <p class="hero-subtitle" id="hero-subtitle">用镜头记录世界的每一个精彩瞬间</p>
+                    <p class="hero-description" id="hero-description">专注于人像、风光、纪实与黑白摄影，<br>在光与影的交织中，发现生活的美</p>
+                    <div class="hero-actions">
+                        <a href="#portfolio" class="hero-btn hero-btn-primary" id="hero-btn-primary">浏览作品</a>
+                        <a href="#contact" class="hero-btn hero-btn-secondary" id="hero-btn-secondary">联系我</a>
+                    </div>
+                </figcaption>
+            </figure>
+            
+            <!-- 滚动提示箭头 -->
+            <a href="#portfolio" class="scroll-indicator" aria-label="向下滚动查看作品">
+                <span class="scroll-text">向下滚动</span>
+                <div class="scroll-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </a>
+        </section>
+
+        <!-- 作品展示区域 -->
+        <section id="portfolio" class="portfolio-section" aria-labelledby="portfolio-title">
+            <header class="section-header">
+                <h2 id="portfolio-title" class="section-title">作品展示</h2>
+                <p class="section-subtitle">精选摄影作品，记录生活中的美好瞬间</p>
+            </header>
+            
+            <!-- 分类筛选 -->
+            <div class="filter-container" role="group" aria-label="作品分类筛选">
+                <button class="filter-btn active" data-filter="all" aria-pressed="true">全部</button>
+                <button class="filter-btn" data-filter="portrait" aria-pressed="false">人像</button>
+                <button class="filter-btn" data-filter="landscape" aria-pressed="false">风光</button>
+                <button class="filter-btn" data-filter="documentary" aria-pressed="false">纪实</button>
+                <button class="filter-btn" data-filter="blackwhite" aria-pressed="false">黑白</button>
+            </div>
+            
+            <!-- 作品网格 -->
+            <div class="gallery-grid" id="gallery-grid" role="region" aria-label="作品画廊">
+                <!-- 作品卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+
+        <!-- 关于我区域 -->
+        <section id="about" class="about-section" aria-labelledby="about-title">
+            <header class="section-header">
+                <h2 id="about-title" class="section-title">关于我</h2>
+                <p class="section-subtitle">热爱摄影，用镜头讲述故事</p>
+            </header>
+            
+            <div class="about-container">
+                <div class="about-profile">
+                    <div class="about-avatar">
+                        <svg viewBox="0 0 200 200" class="avatar-svg">
+                            <circle cx="100" cy="100" r="100" fill="#e0e0e0"/>
+                            <circle cx="100" cy="80" r="40" fill="#999"/>
+                            <ellipse cx="100" cy="180" rx="70" ry="50" fill="#999"/>
+                        </svg>
+                    </div>
+                    <div class="about-info">
+                        <h3 class="about-name">摄影师</h3>
+                        <p class="about-role">人像 / 风光 / 纪实摄影师</p>
+                    </div>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-bio">
+                        <h4>个人简介</h4>
+                        <p>我是一名热爱摄影的独立摄影师，专注于人像、风光和纪实摄影。多年来，我用镜头记录了无数动人的瞬间，从城市的繁华到自然的宁静，从人物的喜怒哀乐到生活的点滴细节。</p>
+                        <p>我相信，每一张照片都是一个故事，每一个画面都承载着独特的情感。摄影不仅是技术的展现，更是对生活的观察和对美的追求。</p>
+                    </div>
+                    
+                    <div class="about-philosophy">
+                        <h4>摄影理念</h4>
+                        <blockquote>"摄影是光与影的诗，是时间的切片，是情感的载体。"</blockquote>
+                        <p>我追求自然、真实、有温度的影像，希望通过我的作品，让观者感受到生活中的美好与感动。</p>
+                    </div>
+                    
+                    <div class="about-equipment">
+                        <h4>常用器材</h4>
+                        <ul class="equipment-list">
+                            <li>
+                                <span class="equipment-icon">📷</span>
+                                <span class="equipment-name">Sony A7R IV</span>
+                                <span class="equipment-desc">全画幅微单相机</span>
+                            </li>
+                            <li>
+                                <span class="equipment-icon">🔭</span>
+                                <span class="equipment-name">24-70mm f/2.8 GM</span>
+                                <span class="equipment-desc">标准变焦镜头</span>
+                            </li>
+                            <li>
+                                <span class="equipment-icon">🔭</span>
+                                <span class="equipment-name">85mm f/1.4 GM</span>
+                                <span class="equipment-desc">人像定焦镜头</span>
+                            </li>
+                            <li>
+                                <span class="equipment-icon">🔭</span>
+                                <span class="equipment-name">16-35mm f/2.8 GM</span>
+                                <span class="equipment-desc">广角变焦镜头</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="about-social">
+                    <h4>关注我</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="微博">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.573h.014zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.579-.18-.405-.649.375-1.018.42-1.894.009-2.517-.761-1.166-2.848-1.103-5.227-.031-.001 0-.387.17-.288-.139.189-.601.161-1.104-.133-1.395-.669-.661-2.446-.062-3.967 1.337-1.138 1.048-1.799 2.158-1.799 3.129 0 1.831 2.351 2.946 4.652 2.946 3.019 0 5.029-1.756 5.029-3.15 0-.843-.711-1.321-1.871-1.531h.001zm1.121-4.617c-.23-.273-.569-.421-.917-.421h-.001c-.348 0-.688.148-.918.421l-1.516 1.787c-.229.272-.357.63-.357 1.002s.128.73.357 1.002l.146.171c.23.273.569.421.917.421h.001c.348 0 .688-.148.918-.421l1.516-1.787c.229-.272.357-.63.357-1.002s-.128-.73-.357-1.002l-.146-.171z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="微信">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="邮箱">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系区域 -->
+        <section id="contact" class="contact-section" aria-labelledby="contact-title">
+            <header class="section-header">
+                <h2 id="contact-title" class="section-title">联系方式</h2>
+                <p class="section-subtitle">期待与您的合作，欢迎预约拍摄</p>
+            </header>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <div class="contact-detail">
+                            <h4>电子邮箱</h4>
+                            <p>contact@photography.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📱</span>
+                        <div class="contact-detail">
+                            <h4>联系电话</h4>
+                            <p>+86 138 0000 0000</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div class="contact-detail">
+                            <h4>工作室地址</h4>
+                            <p>北京市朝阳区艺术园区</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" id="contact-form" action="#" method="POST" aria-label="联系表单">
+                    <div class="form-group">
+                        <label for="name">姓名 <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required minlength="2" placeholder="请输入您的姓名" aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">邮箱 <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="请输入您的邮箱" aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">主题</label>
+                        <input type="text" id="subject" name="subject" placeholder="请输入留言主题">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">留言内容 <span class="required">*</span></label>
+                        <textarea id="message" name="message" rows="5" required minlength="10" placeholder="请输入您的留言内容（至少10个字）" aria-required="true"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">发送消息</span>
+                        <span class="btn-loading" hidden>发送中...</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p class="copyright" id="footer-copyright">&copy; 2024 光影之间. 保留所有权利.</p>
+            <p class="footer-credit">用 ❤️ 和 📷 制作</p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="back-to-top" aria-label="回到顶部" title="回到顶部">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <!-- 灯箱模态框 -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品查看" hidden>
+        <div class="lightbox-backdrop"></div>
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightbox-close" aria-label="关闭">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            
+            <button class="lightbox-share" id="lightbox-share" aria-label="分享">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            </button>
+            
+            <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="上一张">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            
+            <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="下一张">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            
+            <div class="lightbox-image-container">
+                <div class="lightbox-loading" id="lightbox-loading">
+                    <div class="loading-spinner"></div>
+                    <span class="loading-text">加载中...</span>
+                </div>
+                <img src="" alt="" class="lightbox-image" id="lightbox-image">
+            </div>
+            
+            <div class="lightbox-info">
+                <h3 class="lightbox-title" id="lightbox-title"></h3>
+                <div class="lightbox-meta" id="lightbox-meta"></div>
+                <p class="lightbox-description" id="lightbox-description"></p>
+            </div>
+            
+            <div class="lightbox-counter">
+                <span id="lightbox-current">1</span> / <span id="lightbox-total">12</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="js/main.js"></script>
+</body>
+</html>
