@@ -172,7 +172,6 @@ const accessControl = {
         const hostname = window.location.hostname;
         this.isLocal = hostname === 'localhost' ||
             hostname === '127.0.0.1' ||
-            hostname === '' ||
             hostname.startsWith('192.168.');
 
         if (this.isLocal) {
@@ -476,12 +475,12 @@ const photosManager = {
     editingId: null,
 
     async init() {
-        await this.loadPhotos();
+        await this.reloadFromProject();
         this.bindEvents();
         this.renderList();
     },
 
-    async loadPhotos() {
+    async reloadFromProject(showToast = false) {
         try {
             const data = await utils.fetchJSON(ADMIN_CONFIG.paths.photos);
             const projectPhotos = Array.isArray(data.photos)
@@ -494,9 +493,15 @@ const photosManager = {
             this.sourcePhotos = normalized;
             this.photos = utils.deepClone(normalized);
             console.log('Admin loaded project photos from data/photos.json');
+            this.renderList();
+
+            if (showToast) {
+                toast.success('已从 data/photos.json 重新读取作品列表');
+            }
         } catch (error) {
             this.sourcePhotos = [];
             this.photos = [];
+            this.renderList();
             toast.error(`${error.message}，作品集初始化为空`);
         }
     },
@@ -690,6 +695,7 @@ const photosManager = {
 
     bindEvents() {
         document.getElementById('btn-add-photo').addEventListener('click', () => this.add());
+        document.getElementById('btn-reload-photos').addEventListener('click', () => this.reloadFromProject(true));
         document.getElementById('modal-close').addEventListener('click', () => this.closeModal());
         document.getElementById('btn-modal-cancel').addEventListener('click', () => this.closeModal());
         document.getElementById('btn-modal-save').addEventListener('click', () => this.save());

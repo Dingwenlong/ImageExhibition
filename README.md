@@ -44,7 +44,7 @@ ImageExhibition/
 
 ### 1. 启动本地静态服务
 
-推荐使用 Python：
+后台读取 `data/config.json` 和 `data/photos.json` 时，必须通过本地 HTTP 服务访问。推荐使用 Python：
 
 ```bash
 python -m http.server 8000
@@ -55,10 +55,22 @@ python -m http.server 8000
 - 首页：`http://127.0.0.1:8000/index.html`
 - 后台：`http://127.0.0.1:8000/admin.html`
 
+Windows 下也可以直接双击项目根目录的：
+
+```bat
+start-local.bat
+```
+
+这个脚本会：
+
+- 在新窗口启动 `python -m http.server 8000`
+- 自动打开首页
+- 自动打开后台
+
 说明：
 
 - 管理后台设计为本地访问使用
-- 直接双击打开 HTML 虽然可以查看部分内容，但后台读取 JSON 文件时建议始终通过本地服务器访问
+- `admin.html` 需要通过 `localhost` / `127.0.0.1` 访问，不能依赖 `file://` 直接读取项目 JSON
 
 ## 页面与数据关系
 
@@ -100,9 +112,10 @@ python -m http.server 8000
 1. 打开 `admin.html`
 2. 进入“作品管理”
 3. 新增、编辑或删除作品
-4. 进入“导入导出”页，导出 `photos.json`
-5. 用下载的文件替换项目中的 `data/photos.json`
-6. 刷新 `index.html`
+4. 如你已在项目外部替换过 `data/photos.json`，可先点击“从 JSON 重新读取”
+5. 进入“导入导出”页，导出 `photos.json`
+6. 用下载的文件替换项目中的 `data/photos.json`
+7. 刷新 `index.html`
 
 ### 一次性导出全部项目文件
 

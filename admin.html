@@ -12,8 +12,8 @@
     <div class="access-control" id="access-control">
         <div class="access-modal">
             <h2>🔒 管理后台</h2>
-            <p>此页面仅限本地访问</p>
-            <p class="access-hint">如需访问，请在本地服务器运行</p>
+            <p>此页面仅限本地 HTTP 服务访问</p>
+            <p class="access-hint">请通过 localhost 或 127.0.0.1 打开，后台需要读取项目中的 JSON 文件</p>
             <a href="index.html" class="back-link">返回首页</a>
         </div>
     </div>
@@ -223,8 +223,12 @@
                     <div class="config-card">
                         <div class="card-header">
                             <h3 class="card-title">作品列表</h3>
-                            <button class="btn btn-primary btn-sm" id="btn-add-photo">+ 添加作品</button>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary btn-sm" id="btn-reload-photos">从 JSON 重新读取</button>
+                                <button class="btn btn-primary btn-sm" id="btn-add-photo">+ 添加作品</button>
+                            </div>
                         </div>
+                        <p class="card-desc">列表基于项目中的 <code>data/photos.json</code> 初始化。替换该文件后，可点击“从 JSON 重新读取”刷新后台列表。</p>
                         <div class="photos-list" id="photos-list">
                             <!-- 作品列表将通过JS动态生成 -->
                         </div>
