@@ -56,8 +56,8 @@
             <header class="content-header">
                 <h2 class="content-title" id="section-title">首页配置</h2>
                 <div class="header-actions">
-                    <button class="btn btn-secondary" id="btn-reset">重置</button>
-                    <button class="btn btn-primary" id="btn-save">保存配置</button>
+                    <button class="btn btn-secondary" id="btn-reset">恢复文件内容</button>
+                    <button class="btn btn-primary" id="btn-save">保存当前编辑</button>
                 </div>
             </header>
 
@@ -121,7 +121,7 @@
                         </div>
                         <div class="form-group">
                             <label for="footer-copyright">版权信息</label>
-                            <input type="text" id="footer-copyright" class="form-input" placeholder="© 2024 光影之间. 保留所有权利.">
+                            <input type="text" id="footer-copyright" class="form-input" placeholder="© 2026 光影之间. 保留所有权利.">
                         </div>
                     </div>
                 </section>
@@ -234,17 +234,18 @@
                 <!-- 导入导出 -->
                 <section class="config-section" id="import-export" hidden>
                     <div class="config-card">
-                        <h3 class="card-title">导出配置</h3>
-                        <p class="card-desc">将当前配置导出为JSON文件，方便备份或迁移。</p>
+                        <h3 class="card-title">导出项目文件</h3>
+                        <p class="card-desc">导出可直接替换到项目 data 目录下的 JSON 文件。替换后刷新 index.html，即可同步最新首页配置和作品集。</p>
                         <div class="btn-group">
-                            <button class="btn btn-primary" id="btn-export-all">导出全部配置</button>
-                            <button class="btn btn-secondary" id="btn-export-photos">仅导出作品数据</button>
+                            <button class="btn btn-primary" id="btn-export-all">导出 config + photos</button>
+                            <button class="btn btn-secondary" id="btn-export-config">仅导出 config.json</button>
+                            <button class="btn btn-secondary" id="btn-export-photos">仅导出 photos.json</button>
                         </div>
                     </div>
 
                     <div class="config-card">
                         <h3 class="card-title">导入配置</h3>
-                        <p class="card-desc">从JSON文件导入配置，将覆盖当前设置。</p>
+                        <p class="card-desc">支持导入 data/config.json、data/photos.json，或包含二者的备份 JSON。导入后会覆盖后台当前编辑内容。</p>
                         <div class="file-upload-area" id="file-upload-area">
                             <input type="file" id="import-file" accept=".json" hidden>
                             <div class="upload-hint">
@@ -292,13 +293,27 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="photo-thumbnail">缩略图URL *</label>
+                                <label for="photo-thumbnail">缩略图路径 *</label>
                                 <input type="text" id="photo-thumbnail" class="form-input" required>
                             </div>
                             <div class="form-group">
-                                <label for="photo-fullimage">高清图URL *</label>
+                                <label for="photo-fullimage">高清图路径 *</label>
                                 <input type="text" id="photo-fullimage" class="form-input" required>
                             </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photo-webp-thumbnail">WebP 缩略图路径</label>
+                                <input type="text" id="photo-webp-thumbnail" class="form-input" placeholder="images/webp/thumbs/photo-01.webp">
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-webp-full">WebP 高清图路径</label>
+                                <input type="text" id="photo-webp-full" class="form-input" placeholder="images/webp/full/photo-01.webp">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-blur-thumbnail">模糊缩略图路径</label>
+                            <input type="text" id="photo-blur-thumbnail" class="form-input" placeholder="images/blur/photo-01-blur.jpg">
                         </div>
                         <div class="form-group">
                             <label for="photo-description">作品描述</label>

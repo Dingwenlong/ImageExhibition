@@ -481,32 +481,7 @@ const gallery = {
     },
     
     async loadPhotos() {
-        // 优先级：config.json > localStorage > photos.json > 默认数据
-        
-        // 1. 尝试从config.json读取
-        try {
-            const configResponse = await fetch('data/config.json');
-            if (configResponse.ok) {
-                const configData = await configResponse.json();
-                if (configData.photosData && configData.photosData.length > 0) {
-                    this.photosData = configData.photosData;
-                    console.log('Loaded photos from config.json');
-                    return;
-                }
-            }
-        } catch (e) {
-            console.log('No photos in config.json');
-        }
-        
-        // 2. 尝试从localStorage读取
-        const adminPhotos = storage.get(CONFIG.admin.photosDataKey, []);
-        if (adminPhotos.length > 0) {
-            this.photosData = adminPhotos;
-            console.log('Loaded photos from admin config (localStorage)');
-            return;
-        }
-        
-        // 3. 从photos.json读取
+        // 公共首页只读取仓库内的作品数据文件，避免被浏览器历史缓存覆盖
         try {
             const response = await fetch(CONFIG.gallery.dataPath);
             if (!response.ok) {
@@ -518,6 +493,7 @@ const gallery = {
         } catch (error) {
             console.error('Error loading photos:', error);
             this.photosData = this.getDefaultPhotos();
+            console.log('Loaded embedded photo fallback data');
         }
     },
     
@@ -525,70 +501,242 @@ const gallery = {
         return [
             {
                 id: 1,
-                title: "晨光中的少女",
+                title: "光线中的侧颜",
                 category: "portrait",
-                thumbnail: "https://via.placeholder.com/400x300/667eea/ffffff?text=Portrait+1",
-                fullImage: "https://via.placeholder.com/1200x800/667eea/ffffff?text=Portrait+1",
+                thumbnail: "images/thumbs/photo-01.jpg",
+                fullImage: "images/full/photo-01.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-01.webp",
+                webpFull: "images/webp/full/photo-01.webp",
+                blurThumbnail: "images/blur/photo-01-blur.jpg",
                 metadata: {
-                    camera: "Sony A7R IV",
-                    lens: "85mm f/1.4 GM",
+                    camera: "Canon EOS R6 Mark II",
+                    lens: "RF 85mm F1.2L USM",
                     aperture: "f/1.8",
-                    shutter: "1/250s",
-                    iso: "100",
-                    location: "杭州西湖",
-                    date: "2024-03-15",
-                    description: "清晨的柔和光线勾勒出模特优雅的轮廓，大光圈营造出梦幻般的背景虚化效果。"
+                    shutter: "1/320s",
+                    iso: "200",
+                    location: "北京工作室",
+                    date: "2024-05-18",
+                    description: "柔和侧光把人物从背景中轻轻提亮，画面情绪克制而安静。"
                 }
             },
             {
                 id: 2,
-                title: "黄山云海",
-                category: "landscape",
-                thumbnail: "https://via.placeholder.com/400x300/764ba2/ffffff?text=Landscape+1",
-                fullImage: "https://via.placeholder.com/1200x800/764ba2/ffffff?text=Landscape+1",
+                title: "静默凝视",
+                category: "portrait",
+                thumbnail: "images/thumbs/photo-02.jpg",
+                fullImage: "images/full/photo-02.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-02.webp",
+                webpFull: "images/webp/full/photo-02.webp",
+                blurThumbnail: "images/blur/photo-02-blur.jpg",
                 metadata: {
-                    camera: "Sony A7R IV",
-                    lens: "16-35mm f/2.8 GM",
-                    aperture: "f/11",
-                    shutter: "1/60s",
-                    iso: "200",
-                    location: "安徽黄山",
-                    date: "2024-02-20",
-                    description: "日出时分，云海翻涌，金色的阳光穿透云层，照亮了远处的山峰。"
+                    camera: "Sony A7 IV",
+                    lens: "FE 85mm F1.8",
+                    aperture: "f/2.0",
+                    shutter: "1/250s",
+                    iso: "160",
+                    location: "上海棚拍空间",
+                    date: "2024-07-12",
+                    description: "近距离的视线交流让肖像更直接，肤色与背景保持了干净的层次。"
                 }
             },
             {
                 id: 3,
-                title: "老街手艺人",
-                category: "documentary",
-                thumbnail: "https://via.placeholder.com/400x300/f093fb/ffffff?text=Documentary+1",
-                fullImage: "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Documentary+1",
+                title: "风中的微笑",
+                category: "portrait",
+                thumbnail: "images/thumbs/photo-03.jpg",
+                fullImage: "images/full/photo-03.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-03.webp",
+                webpFull: "images/webp/full/photo-03.webp",
+                blurThumbnail: "images/blur/photo-03-blur.jpg",
                 metadata: {
-                    camera: "Fujifilm X-T4",
-                    lens: "35mm f/1.4",
-                    aperture: "f/2.8",
-                    shutter: "1/125s",
-                    iso: "400",
-                    location: "苏州平江路",
-                    date: "2024-01-10",
-                    description: "记录传统手工艺人的专注神情，展现匠人精神的传承与坚守。"
+                    camera: "Nikon Z6 II",
+                    lens: "NIKKOR Z 50mm f/1.8 S",
+                    aperture: "f/2.2",
+                    shutter: "1/500s",
+                    iso: "100",
+                    location: "广州天台",
+                    date: "2024-09-03",
+                    description: "自然风带动发丝与表情，画面保留了轻松、不刻意的生活感。"
                 }
             },
             {
                 id: 4,
-                title: "城市几何",
-                category: "blackwhite",
-                thumbnail: "https://via.placeholder.com/400x300/333333/ffffff?text=B&W+1",
-                fullImage: "https://via.placeholder.com/1200x800/333333/ffffff?text=B&W+1",
+                title: "山间晨雾",
+                category: "landscape",
+                thumbnail: "images/thumbs/photo-04.jpg",
+                fullImage: "images/full/photo-04.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-04.webp",
+                webpFull: "images/webp/full/photo-04.webp",
+                blurThumbnail: "images/blur/photo-04-blur.jpg",
                 metadata: {
-                    camera: "Leica M10",
-                    lens: "50mm f/2",
+                    camera: "Sony A7R IV",
+                    lens: "FE 16-35mm F2.8 GM",
+                    aperture: "f/11",
+                    shutter: "1/80s",
+                    iso: "125",
+                    location: "高地山谷",
+                    date: "2023-10-08",
+                    description: "层叠山体被清晨雾气轻轻包住，冷暖光线在远处形成柔和过渡。"
+                }
+            },
+            {
+                id: 5,
+                title: "雪岭远眺",
+                category: "landscape",
+                thumbnail: "images/thumbs/photo-05.jpg",
+                fullImage: "images/full/photo-05.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-05.webp",
+                webpFull: "images/webp/full/photo-05.webp",
+                blurThumbnail: "images/blur/photo-05-blur.jpg",
+                metadata: {
+                    camera: "Canon EOS R5",
+                    lens: "RF 24-70mm F2.8L IS USM",
+                    aperture: "f/10",
+                    shutter: "1/160s",
+                    iso: "100",
+                    location: "冰川高地",
+                    date: "2024-02-11",
+                    description: "雪线与云层把空间拉得很开，画面重点落在山脊的节奏与尺度感上。"
+                }
+            },
+            {
+                id: 6,
+                title: "夜色星幕",
+                category: "landscape",
+                thumbnail: "images/thumbs/photo-06.jpg",
+                fullImage: "images/full/photo-06.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-06.webp",
+                webpFull: "images/webp/full/photo-06.webp",
+                blurThumbnail: "images/blur/photo-06-blur.jpg",
+                metadata: {
+                    camera: "Nikon Z7 II",
+                    lens: "NIKKOR Z 14-24mm f/2.8 S",
+                    aperture: "f/2.8",
+                    shutter: "20s",
+                    iso: "3200",
+                    location: "荒野营地",
+                    date: "2024-08-22",
+                    description: "深夜的地平线很安静，星空与地面微弱光源一起撑起整张画面的氛围。"
+                }
+            },
+            {
+                id: 7,
+                title: "市井早集",
+                category: "documentary",
+                thumbnail: "images/thumbs/photo-07.jpg",
+                fullImage: "images/full/photo-07.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-07.webp",
+                webpFull: "images/webp/full/photo-07.webp",
+                blurThumbnail: "images/blur/photo-07-blur.jpg",
+                metadata: {
+                    camera: "Fujifilm X-T5",
+                    lens: "XF 35mm F1.4 R",
+                    aperture: "f/4",
+                    shutter: "1/200s",
+                    iso: "500",
+                    location: "老城区街市",
+                    date: "2024-04-06",
+                    description: "镜头停在普通人的工作节奏里，画面重点不是戏剧冲突，而是日常本身。"
+                }
+            },
+            {
+                id: 8,
+                title: "街头穿行",
+                category: "documentary",
+                thumbnail: "images/thumbs/photo-08.jpg",
+                fullImage: "images/full/photo-08.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-08.webp",
+                webpFull: "images/webp/full/photo-08.webp",
+                blurThumbnail: "images/blur/photo-08-blur.jpg",
+                metadata: {
+                    camera: "Leica Q3",
+                    lens: "Summilux 28mm f/1.7 ASPH",
+                    aperture: "f/5.6",
+                    shutter: "1/320s",
+                    iso: "400",
+                    location: "城市街口",
+                    date: "2024-06-27",
+                    description: "人流在同一空间里短暂交汇，纪实感来自自然发生的动作与视线关系。"
+                }
+            },
+            {
+                id: 9,
+                title: "集市一角",
+                category: "documentary",
+                thumbnail: "images/thumbs/photo-09.jpg",
+                fullImage: "images/full/photo-09.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-09.webp",
+                webpFull: "images/webp/full/photo-09.webp",
+                blurThumbnail: "images/blur/photo-09-blur.jpg",
+                metadata: {
+                    camera: "Ricoh GR IIIx",
+                    lens: "40mm equivalent f/2.8",
+                    aperture: "f/4.5",
+                    shutter: "1/160s",
+                    iso: "640",
+                    location: "海边小镇",
+                    date: "2023-12-01",
+                    description: "稍带距离感的观察方式保留了环境信息，也让人物状态显得更自然。"
+                }
+            },
+            {
+                id: 10,
+                title: "单色橱窗",
+                category: "blackwhite",
+                thumbnail: "images/thumbs/photo-10.jpg",
+                fullImage: "images/full/photo-10.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-10.webp",
+                webpFull: "images/webp/full/photo-10.webp",
+                blurThumbnail: "images/blur/photo-10-blur.jpg",
+                metadata: {
+                    camera: "Leica Q2 Monochrom",
+                    lens: "Summilux 28mm f/1.7 ASPH",
+                    aperture: "f/4",
+                    shutter: "1/250s",
+                    iso: "400",
+                    location: "城市街区",
+                    date: "2024-01-09",
+                    description: "黑白处理压缩了色彩干扰，光线、材质和人物边界因此更加醒目。"
+                }
+            },
+            {
+                id: 11,
+                title: "建筑的线条",
+                category: "blackwhite",
+                thumbnail: "images/thumbs/photo-11.jpg",
+                fullImage: "images/full/photo-11.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-11.webp",
+                webpFull: "images/webp/full/photo-11.webp",
+                blurThumbnail: "images/blur/photo-11-blur.jpg",
+                metadata: {
+                    camera: "Sony A7R V",
+                    lens: "FE 24-70mm F2.8 GM II",
                     aperture: "f/8",
                     shutter: "1/500s",
-                    iso: "100",
-                    location: "上海陆家嘴",
-                    date: "2024-03-01",
-                    description: "通过黑白影调强调建筑的线条与几何美感，展现都市的冷峻与现代感。"
+                    iso: "125",
+                    location: "商务区",
+                    date: "2024-03-14",
+                    description: "把建筑转换为黑白后，视线会更自然地落在线条、留白和重复结构上。"
+                }
+            },
+            {
+                id: 12,
+                title: "雨巷剪影",
+                category: "blackwhite",
+                thumbnail: "images/thumbs/photo-12.jpg",
+                fullImage: "images/full/photo-12.jpg",
+                webpThumbnail: "images/webp/thumbs/photo-12.webp",
+                webpFull: "images/webp/full/photo-12.webp",
+                blurThumbnail: "images/blur/photo-12-blur.jpg",
+                metadata: {
+                    camera: "Ricoh GR IIIx",
+                    lens: "40mm equivalent f/2.8",
+                    aperture: "f/5.6",
+                    shutter: "1/160s",
+                    iso: "800",
+                    location: "街头夜雨",
+                    date: "2024-11-02",
+                    description: "反光地面与剪影人物构成了最简洁的层次，黑白影调让情绪更集中。"
                 }
             }
         ];
@@ -1348,7 +1496,7 @@ const siteConfig = {
         },
         brand: {
             name: '光影之间',
-            copyright: '© 2024 光影之间. 保留所有权利.'
+            copyright: '© 2026 光影之间. 保留所有权利.'
         },
         theme: {
             accentColor: '#667eea',
@@ -1377,7 +1525,7 @@ const siteConfig = {
     },
     
     async loadConfig() {
-        // 优先尝试从配置文件读取
+        // 公共首页只读取项目中的 data/config.json
         try {
             const response = await fetch('data/config.json');
             if (response.ok) {
@@ -1388,25 +1536,17 @@ const siteConfig = {
                 }
             }
         } catch (e) {
-            console.log('No config file found, using localStorage or defaults');
+            console.log('No config file found, using defaults');
         }
-        
-        // 合并配置优先级：文件配置 > localStorage > 默认配置
-        const localConfig = storage.get(CONFIG.admin.siteConfigKey, null);
-        
+
         if (this.fileConfig) {
-            // 如果有文件配置，优先使用，但localStorage可以覆盖部分设置
-            this.config = this.mergeConfig(this.defaultConfig, this.fileConfig, localConfig);
-        } else if (localConfig) {
-            // 没有文件配置，使用localStorage
-            this.config = { ...this.defaultConfig, ...localConfig };
+            this.config = this.mergeConfig(this.defaultConfig, this.fileConfig);
         } else {
-            // 都没有，使用默认配置
             this.config = { ...this.defaultConfig };
         }
     },
     
-    mergeConfig(defaults, file, local) {
+    mergeConfig(defaults, file) {
         const merged = { ...defaults };
         
         // 文件配置覆盖默认配置
@@ -1416,17 +1556,6 @@ const siteConfig = {
                     merged[key] = { ...defaults[key], ...file[key] };
                 } else {
                     merged[key] = file[key];
-                }
-            });
-        }
-        
-        // localStorage配置覆盖文件配置（允许用户本地自定义）
-        if (local) {
-            Object.keys(local).forEach(key => {
-                if (typeof local[key] === 'object' && local[key] !== null && !Array.isArray(local[key])) {
-                    merged[key] = { ...merged[key], ...local[key] };
-                } else {
-                    merged[key] = local[key];
                 }
             });
         }
