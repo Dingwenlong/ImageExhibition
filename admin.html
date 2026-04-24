@@ -12,8 +12,12 @@
     <div class="access-control" id="access-control">
         <div class="access-modal">
             <h2>🔒 管理后台</h2>
-            <p>此页面仅限本地 HTTP 服务访问</p>
-            <p class="access-hint">请通过 localhost 或 127.0.0.1 打开，后台需要读取项目中的 JSON 文件</p>
+            <p id="access-message">此页面仅限本地 HTTP 服务访问</p>
+            <form class="login-form" id="login-form" hidden>
+                <input type="password" id="admin-password" class="form-input" autocomplete="current-password" placeholder="请输入后台密码">
+                <button type="submit" class="btn btn-primary">登录</button>
+            </form>
+            <p class="access-hint" id="access-hint">请通过 localhost 或 127.0.0.1 打开，后台需要读取项目中的 JSON 文件</p>
             <a href="index.html" class="back-link">返回首页</a>
         </div>
     </div>
@@ -41,6 +45,14 @@
                 <a href="#import-export" class="nav-item" data-section="import-export">
                     <span class="nav-icon">📦</span>
                     <span class="nav-text">导入导出</span>
+                </a>
+                <a href="#maintenance" class="nav-item" data-section="maintenance">
+                    <span class="nav-icon">🧰</span>
+                    <span class="nav-text">维护检查</span>
+                </a>
+                <a href="#messages" class="nav-item" data-section="messages">
+                    <span class="nav-icon">✉️</span>
+                    <span class="nav-text">留言管理</span>
                 </a>
             </nav>
             <div class="sidebar-footer">
@@ -229,6 +241,20 @@
                             </div>
                         </div>
                         <p class="card-desc">列表基于项目中的 <code>data/photos.json</code> 初始化。替换该文件后，可点击“从 JSON 重新读取”刷新后台列表。</p>
+                        <div class="batch-upload-bar">
+                            <input type="file" id="batch-photo-files" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                            <div class="batch-upload-copy">
+                                <strong>批量上传作品</strong>
+                                <span id="batch-upload-status">选择多张图片生成作品草稿</span>
+                            </div>
+                            <select id="batch-photo-category" class="form-select batch-category-select" aria-label="批量上传默认分类">
+                                <option value="portrait">人像</option>
+                                <option value="landscape">风光</option>
+                                <option value="documentary">纪实</option>
+                                <option value="blackwhite">黑白</option>
+                            </select>
+                            <button class="btn btn-secondary btn-sm" id="btn-batch-upload">批量上传</button>
+                        </div>
                         <div class="photos-list" id="photos-list">
                             <!-- 作品列表将通过JS动态生成 -->
                         </div>
@@ -266,6 +292,79 @@
                         <button class="btn btn-danger" id="btn-reset-all">重置所有配置</button>
                     </div>
                 </section>
+
+                <!-- 维护检查 -->
+                <section class="config-section" id="maintenance" hidden>
+                    <div class="config-card">
+                        <div class="card-header">
+                            <h3 class="card-title">数据完整性检查</h3>
+                            <button class="btn btn-primary btn-sm" id="btn-run-integrity-check">运行检查</button>
+                        </div>
+                        <p class="card-desc">检查重复 ID、空标题、异常分类、缺失图片、未引用图片资源等问题。</p>
+                        <div class="health-summary" id="health-summary">
+                            <div class="health-metric">
+                                <span class="metric-value">-</span>
+                                <span class="metric-label">作品</span>
+                            </div>
+                            <div class="health-metric">
+                                <span class="metric-value">-</span>
+                                <span class="metric-label">错误</span>
+                            </div>
+                            <div class="health-metric">
+                                <span class="metric-value">-</span>
+                                <span class="metric-label">警告</span>
+                            </div>
+                            <div class="health-metric">
+                                <span class="metric-value">-</span>
+                                <span class="metric-label">未引用图片</span>
+                            </div>
+                        </div>
+                        <div class="issue-list" id="integrity-issues">
+                            <p class="card-desc">点击“运行检查”后显示结果。</p>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <div class="card-header">
+                            <h3 class="card-title">自动备份</h3>
+                            <button class="btn btn-secondary btn-sm" id="btn-refresh-backups">刷新备份</button>
+                        </div>
+                        <p class="card-desc">每次后台直接保存 JSON 前，系统都会自动备份当前文件。恢复备份会先备份当前文件，再写回选中的备份。</p>
+                        <div class="backup-list" id="backup-list">
+                            <p class="card-desc">暂无备份列表。</p>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h3 class="card-title">安全设置</h3>
+                        <p class="card-desc">修改后的密码会以哈希形式保存到本地配置文件。</p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="current-admin-password">当前密码</label>
+                                <input type="password" id="current-admin-password" class="form-input" autocomplete="current-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-admin-password">新密码</label>
+                                <input type="password" id="new-admin-password" class="form-input" autocomplete="new-password" minlength="8">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="btn-change-password">修改密码</button>
+                    </div>
+                </section>
+
+                <!-- 留言管理 -->
+                <section class="config-section" id="messages" hidden>
+                    <div class="config-card">
+                        <div class="card-header">
+                            <h3 class="card-title">留言列表</h3>
+                            <button class="btn btn-secondary btn-sm" id="btn-refresh-messages">刷新留言</button>
+                        </div>
+                        <p class="card-desc">前台联系表单提交后会保存到 <code>data/messages.json</code>。</p>
+                        <div class="message-list" id="message-list">
+                            <p class="card-desc">暂无留言。</p>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
 
@@ -295,6 +394,20 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="photo-image-file">上传作品图片</label>
+                            <div class="photo-upload-panel" id="photo-upload-area">
+                                <input type="file" id="photo-image-file" accept="image/jpeg,image/png,image/webp" hidden>
+                                <div class="photo-upload-preview" id="photo-upload-preview">
+                                    <span class="photo-upload-icon">+</span>
+                                </div>
+                                <div class="photo-upload-copy">
+                                    <strong>选择 JPG、PNG 或 WebP</strong>
+                                    <span id="photo-upload-status">上传后会自动生成展示图、缩略图和 WebP 路径</span>
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-sm" id="btn-photo-upload">选择图片</button>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="photo-thumbnail">缩略图路径 *</label>
@@ -318,6 +431,20 @@
                         <div class="form-group">
                             <label for="photo-blur-thumbnail">模糊缩略图路径</label>
                             <input type="text" id="photo-blur-thumbnail" class="form-input" placeholder="images/blur/photo-01-blur.jpg">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photo-focus-x">缩略图水平焦点</label>
+                                <input type="range" id="photo-focus-x" class="form-input range-input" min="0" max="1" step="0.05" value="0.5">
+                            </div>
+                            <div class="form-group">
+                                <label for="photo-focus-y">缩略图垂直焦点</label>
+                                <input type="range" id="photo-focus-y" class="form-input range-input" min="0" max="1" step="0.05" value="0.5">
+                            </div>
+                        </div>
+                        <div class="path-check-panel">
+                            <button type="button" class="btn btn-secondary btn-sm" id="btn-check-photo-paths">校验图片路径</button>
+                            <div class="path-check-results" id="path-check-results">可检查当前图片路径是否存在</div>
                         </div>
                         <div class="form-group">
                             <label for="photo-description">作品描述</label>

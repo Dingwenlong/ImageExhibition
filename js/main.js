@@ -472,6 +472,8 @@ const gallery = {
             this.bindFilterEvents();
             
             this.showRecentlyViewed();
+
+            this.openPhotoFromUrl();
             
             console.log(`Gallery initialized with ${this.photosData.length} photos, WebP: ${supportsWebP}`);
         } catch (error) {
@@ -782,6 +784,8 @@ const gallery = {
         
         const thumbnailSrc = useWebP ? webpThumbnail : photo.thumbnail;
         const blurThumbnail = photo.blurThumbnail || '';
+        const focus = photo.focus || { x: 0.5, y: 0.5 };
+        const objectPosition = `${Number(focus.x || 0.5) * 100}% ${Number(focus.y || 0.5) * 100}%`;
         
         return `
             <article class="gallery-item" data-id="${photo.id}" data-category="${photo.category}" style="animation-delay: ${index * CONFIG.gallery.animationDelay}ms">
@@ -792,6 +796,7 @@ const gallery = {
                          class="gallery-item-image ${blurThumbnail ? 'progressive' : ''}"
                          loading="lazy"
                          decoding="async"
+                         style="object-position: ${objectPosition};"
                          ${blurThumbnail ? `data-blur="${blurThumbnail}"` : ''}>
                 </picture>
                 <div class="gallery-item-overlay">
@@ -881,6 +886,14 @@ const gallery = {
             ? this.photosData
             : this.photosData.filter(photo => photo.category === this.currentFilter);
     },
+
+    openPhotoFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const photoId = Number(params.get('photo'));
+        if (Number.isFinite(photoId) && photoId > 0) {
+            lightbox.open(photoId, false);
+        }
+    },
     
     saveFilterPreference(filter) {
         storage.set('portfolio-last-filter', filter);
@@ -962,16 +975,22 @@ const lightbox = {
         document.getElementById('lightbox-next').addEventListener('click', () => this.next());
         
         document.addEventListener('keydown', (e) => this.handleKeydown(e));
+        window.addEventListener('popstate', () => this.handlePopState());
         
         this.bindTouchEvents();
         this.bindPinchZoom();
         this.bindShareButton();
     },
     
-    open(photoId) {
+    open(photoId, updateUrl = true) {
         this.currentPhotoId = photoId;
         this.filteredPhotos = gallery.getFilteredPhotos();
         this.currentIndex = this.filteredPhotos.findIndex(p => p.id === photoId);
+
+        if (this.currentIndex === -1) {
+            this.filteredPhotos = gallery.photosData;
+            this.currentIndex = this.filteredPhotos.findIndex(p => p.id === photoId);
+        }
         
         if (this.currentIndex === -1) return;
         
@@ -985,12 +1004,20 @@ const lightbox = {
         }
         
         this.recordViewHistory(photoId);
+
+        if (updateUrl) {
+            this.writePhotoUrl(photoId, 'push');
+        }
     },
     
-    close() {
+    close(updateUrl = true) {
         this.element.hidden = true;
         document.body.style.overflow = '';
         this.resetZoom();
+
+        if (updateUrl) {
+            this.clearPhotoUrl();
+        }
     },
     
     updateContent() {
@@ -1014,6 +1041,7 @@ const lightbox = {
         this.description.textContent = photo.metadata.description;
         
         this.preloadAdjacentImages();
+        this.updateShareMeta(photo);
     },
     
     showLoading() {
@@ -1031,11 +1059,40 @@ const lightbox = {
     prev() {
         this.currentIndex = (this.currentIndex - 1 + this.filteredPhotos.length) % this.filteredPhotos.length;
         this.updateContent();
+        this.writePhotoUrl(this.filteredPhotos[this.currentIndex].id, 'replace');
     },
     
     next() {
         this.currentIndex = (this.currentIndex + 1) % this.filteredPhotos.length;
         this.updateContent();
+        this.writePhotoUrl(this.filteredPhotos[this.currentIndex].id, 'replace');
+    },
+
+    writePhotoUrl(photoId, mode = 'replace') {
+        const url = new URL(window.location.href);
+        url.searchParams.set('photo', photoId);
+        const method = mode === 'push' ? 'pushState' : 'replaceState';
+        window.history[method]({ photoId }, '', url);
+    },
+
+    clearPhotoUrl() {
+        const url = new URL(window.location.href);
+        if (!url.searchParams.has('photo')) {
+            return;
+        }
+
+        url.searchParams.delete('photo');
+        window.history.replaceState({}, '', url);
+    },
+
+    handlePopState() {
+        const params = new URLSearchParams(window.location.search);
+        const photoId = Number(params.get('photo'));
+        if (Number.isFinite(photoId) && photoId > 0) {
+            this.open(photoId, false);
+        } else if (!this.element.hidden) {
+            this.close(false);
+        }
     },
     
     handleKeydown(e) {
@@ -1289,8 +1346,28 @@ const lightbox = {
         history = history.slice(0, 20);
         
         storage.set(historyKey, history);
+    },
+
+    updateShareMeta(photo) {
+        const title = `${photo.title} | ${siteConfig.config?.brand?.name || '光影之间'}`;
+        const description = photo.metadata?.description || '摄影作品展示';
+        const absoluteImage = new URL(photo.fullImage, window.location.href).href;
+
+        document.title = title;
+        setMetaContent('meta[property="og:title"]', title);
+        setMetaContent('meta[property="og:description"]', description);
+        setMetaContent('meta[property="og:image"]', absoluteImage);
+        setMetaContent('meta[property="og:url"]', window.location.href);
+        setMetaContent('meta[name="description"]', description);
     }
 };
+
+function setMetaContent(selector, content) {
+    const element = document.querySelector(selector);
+    if (element) {
+        element.setAttribute('content', content);
+    }
+}
 
 // ============================================
 // 表单验证模块
@@ -1376,7 +1453,7 @@ const formValidation = {
      * 处理表单提交
      * @param {HTMLFormElement} form - 表单元素
      */
-    handleSubmit(form) {
+    async handleSubmit(form) {
         const submitBtn = form.querySelector('.submit-btn');
         const btnText = submitBtn.querySelector('.btn-text');
         const btnLoading = submitBtn.querySelector('.btn-loading');
@@ -1386,16 +1463,35 @@ const formValidation = {
         btnText.hidden = true;
         btnLoading.hidden = false;
         
-        // 模拟提交
-        setTimeout(() => {
+        try {
+            const payload = {
+                name: form.elements.name.value.trim(),
+                email: form.elements.email.value.trim(),
+                subject: form.elements.subject.value.trim(),
+                message: form.elements.message.value.trim()
+            };
+            const response = await fetch('api/contact-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const data = await response.json().catch(() => ({}));
+                throw new Error(data.error || `HTTP ${response.status}`);
+            }
+
             alert('消息已发送成功！我们会尽快回复您。');
             form.reset();
-            
-            // 恢复按钮状态
+        } catch (error) {
+            alert(`消息发送失败：${error.message}`);
+        } finally {
             submitBtn.disabled = false;
             btnText.hidden = false;
             btnLoading.hidden = true;
-        }, 1500);
+        }
     }
 };
 

@@ -11,11 +11,11 @@ pushd "%ROOT_DIR%" >nul
 
 set "PYTHON_CMD="
 where python >nul 2>nul
-if not errorlevel 1 set "PYTHON_CMD=python -m"
+if not errorlevel 1 set "PYTHON_CMD=python"
 
 if not defined PYTHON_CMD (
     where py >nul 2>nul
-    if not errorlevel 1 set "PYTHON_CMD=py -m"
+    if not errorlevel 1 set "PYTHON_CMD=py -3"
 )
 
 if not defined PYTHON_CMD (
@@ -27,16 +27,17 @@ if not defined PYTHON_CMD (
 
 echo [INFO] Project root: %ROOT_DIR%
 echo [INFO] Server URL: http://%HOST%:%PORT%/
+echo [INFO] Admin password: admin123
 
 if "%DRY_RUN%"=="1" (
-    echo [DRY_RUN] Would start: %PYTHON_CMD% http.server %PORT%
+    echo [DRY_RUN] Would start: %PYTHON_CMD% scripts\local_server.py --host %HOST% --port %PORT%
     echo [DRY_RUN] Would open: %INDEX_URL%
     echo [DRY_RUN] Would open: %ADMIN_URL%
     popd >nul
     exit /b 0
 )
 
-start "ImageExhibition Server" cmd /k "%PYTHON_CMD% http.server %PORT%"
+start "ImageExhibition Server" cmd /k "%PYTHON_CMD% scripts\local_server.py --host %HOST% --port %PORT%"
 timeout /t 2 /nobreak >nul
 start "" "%INDEX_URL%"
 start "" "%ADMIN_URL%"

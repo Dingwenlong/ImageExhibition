@@ -96,6 +96,21 @@ body {
     margin-bottom: 0.5rem;
 }
 
+.login-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.login-form[hidden] {
+    display: none;
+}
+
+.login-form .form-input {
+    background: #fff;
+}
+
 .access-hint {
     font-size: 0.875rem;
     opacity: 0.8;
@@ -343,6 +358,164 @@ body {
     min-height: 80px;
 }
 
+.range-input {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.path-check-panel {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: var(--admin-radius);
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+}
+
+.path-check-results {
+    color: var(--admin-text-secondary);
+    font-size: 0.8125rem;
+}
+
+.path-check-results .ok {
+    color: var(--admin-success);
+}
+
+.path-check-results .missing {
+    color: var(--admin-danger);
+}
+
+.health-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.health-metric {
+    padding: 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius);
+    background: var(--admin-bg);
+}
+
+.metric-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--admin-text);
+}
+
+.metric-label {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--admin-text-secondary);
+    font-size: 0.8125rem;
+}
+
+.issue-list,
+.backup-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.issue-item,
+.backup-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.875rem;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius);
+    background: var(--admin-bg);
+}
+
+.issue-item {
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.issue-level {
+    flex: 0 0 auto;
+    min-width: 64px;
+    padding: 0.2rem 0.45rem;
+    border-radius: 999px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--admin-card-bg);
+    border: 1px solid var(--admin-border);
+}
+
+.issue-level.error {
+    color: var(--admin-danger);
+}
+
+.issue-level.warning {
+    color: #b45309;
+}
+
+.issue-level.info {
+    color: var(--admin-primary);
+}
+
+.issue-message,
+.backup-meta {
+    min-width: 0;
+    color: var(--admin-text);
+    font-size: 0.875rem;
+}
+
+.backup-files {
+    color: var(--admin-text-secondary);
+    font-size: 0.8125rem;
+}
+
+.message-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.message-item {
+    padding: 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius);
+    background: var(--admin-bg);
+}
+
+.message-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.message-sender {
+    font-weight: 600;
+}
+
+.message-date,
+.message-email {
+    color: var(--admin-text-secondary);
+    font-size: 0.8125rem;
+}
+
+.message-subject {
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+}
+
+.message-body {
+    white-space: pre-wrap;
+    color: var(--admin-text);
+    font-size: 0.875rem;
+}
+
 /* 颜色输入 */
 .color-input-wrapper {
     display: flex;
@@ -446,6 +619,40 @@ body {
     flex-wrap: wrap;
 }
 
+.batch-upload-bar {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) 150px auto;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 0.875rem;
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius);
+}
+
+.batch-upload-copy {
+    min-width: 0;
+    display: grid;
+    gap: 0.15rem;
+}
+
+.batch-upload-copy strong {
+    font-size: 0.925rem;
+    font-weight: 600;
+}
+
+.batch-upload-copy span {
+    color: var(--admin-text-secondary);
+    font-size: 0.8125rem;
+}
+
+.batch-category-select {
+    min-width: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
 /* ============================================
    作品列表
    ============================================ */
@@ -463,6 +670,29 @@ body {
     background: var(--admin-bg);
     border-radius: var(--admin-radius);
     border: 1px solid var(--admin-border);
+}
+
+.photo-item.dragging {
+    opacity: 0.5;
+}
+
+.photo-item.drag-over {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+.drag-handle {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    background: var(--admin-card-bg);
+    color: var(--admin-text-secondary);
+    cursor: grab;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
 }
 
 .photo-thumb {
@@ -529,6 +759,84 @@ body {
 .upload-format {
     font-size: 0.8125rem;
     opacity: 0.8;
+}
+
+.photo-upload-panel {
+    display: grid;
+    grid-template-columns: 86px minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.875rem;
+    border: 1px dashed var(--admin-border);
+    border-radius: var(--admin-radius);
+    background: var(--admin-bg);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.photo-upload-panel:hover,
+.photo-upload-panel.is-dragging {
+    border-color: var(--admin-primary);
+    background: rgba(59, 130, 246, 0.05);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+.photo-upload-panel.is-uploading {
+    cursor: wait;
+    opacity: 0.78;
+}
+
+.photo-upload-preview {
+    width: 86px;
+    height: 64px;
+    border-radius: 6px;
+    border: 1px solid var(--admin-border);
+    background: var(--admin-card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    cursor: crosshair;
+}
+
+.photo-upload-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.focus-marker {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.7);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.photo-upload-icon {
+    color: var(--admin-text-secondary);
+    font-size: 1.75rem;
+    line-height: 1;
+}
+
+.photo-upload-copy {
+    min-width: 0;
+    display: grid;
+    gap: 0.2rem;
+}
+
+.photo-upload-copy strong {
+    font-size: 0.925rem;
+    font-weight: 600;
+}
+
+.photo-upload-copy span {
+    color: var(--admin-text-secondary);
+    font-size: 0.8125rem;
 }
 
 /* ============================================
@@ -685,6 +993,33 @@ body {
     
     .form-row {
         grid-template-columns: 1fr;
+    }
+
+    .batch-upload-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .health-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .backup-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    
+    .photo-upload-panel {
+        grid-template-columns: 72px 1fr;
+    }
+
+    .photo-upload-preview {
+        width: 72px;
+        height: 54px;
+    }
+
+    .photo-upload-panel .btn {
+        grid-column: 1 / -1;
+        width: 100%;
     }
     
     .photo-item {

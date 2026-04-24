@@ -1,0 +1,16 @@
+# Local runtime data
+data/admin.json
+data/messages.json
+data/image_hashes.json
+backups/
+
+# Python/runtime caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Browser/test scratch
+.playwright-mcp/
+
+# Local logs
+*.log
