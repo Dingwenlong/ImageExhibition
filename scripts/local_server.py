@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import cgi
 import hashlib
 import hmac
 import json
@@ -9,6 +8,8 @@ import os
 import secrets
 import shutil
 from datetime import datetime
+from email import message_from_bytes
+from email.policy import HTTP as HTTPPolicy
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -34,6 +35,30 @@ MAX_UPLOAD_BYTES = 25 * 1024 * 1024
 THUMB_SIZE = (400, 300)
 BLUR_SIZE = (40, 30)
 PHOTO_CATEGORIES = {"portrait", "landscape", "documentary", "blackwhite"}
+
+
+def parse_multipart(content_type: str, body: bytes) -> dict[str, Any]:
+    header = f"Content-Type: {content_type}\r\n\r\n".encode()
+    msg = message_from_bytes(header + body, policy=HTTPPolicy)
+    fields: dict[str, Any] = {}
+    for part in msg.iter_parts():
+        cd = part.get("Content-Disposition", "")
+        if "name=" not in cd:
+            continue
+        name_start = cd.index("name=") + 5
+        name_end = cd.index(";", name_start) if ";" in cd[name_start:] else len(cd)
+        name = cd[name_start:name_end].strip().strip('"')
+        filename = None
+        if "filename=" in cd:
+            fn_start = cd.index("filename=") + 9
+            fn_end = cd.index(";", fn_start) if ";" in cd[fn_start:] else len(cd)
+            filename = cd[fn_start:fn_end].strip().strip('"')
+        payload = part.get_content()
+        if filename:
+            fields[name] = {"filename": filename, "data": payload if isinstance(payload, bytes) else payload.encode()}
+        else:
+            fields[name] = payload if isinstance(payload, str) else payload.decode()
+    return fields
 
 
 class LocalServerHandler(SimpleHTTPRequestHandler):
@@ -223,25 +248,19 @@ class LocalServerHandler(SimpleHTTPRequestHandler):
         if not content_type.lower().startswith("multipart/form-data"):
             raise ValueError("upload-photo expects multipart/form-data")
 
-        form = cgi.FieldStorage(
-            fp=self.rfile,
-            headers=self.headers,
-            environ={
-                "REQUEST_METHOD": "POST",
-                "CONTENT_TYPE": content_type,
-                "CONTENT_LENGTH": str(length),
-            },
-        )
-        image_field = form["image"] if "image" in form else None
-        if image_field is None or not getattr(image_field, "filename", ""):
+        body = self.rfile.read(length)
+        form = parse_multipart(content_type, body)
+
+        image_field = form.get("image")
+        if image_field is None or not isinstance(image_field, dict) or not image_field.get("filename"):
             raise ValueError("Missing image file")
 
-        photo_id = parse_photo_id(form.getfirst("photoId"))
-        category = form.getfirst("category", "portrait")
+        photo_id = parse_photo_id(form.get("photoId"))
+        category = form.get("category", "portrait") or "portrait"
         if category not in PHOTO_CATEGORIES:
             category = "portrait"
 
-        image_bytes = image_field.file.read()
+        image_bytes = image_field["data"]
         image_hash = hashlib.sha256(image_bytes).hexdigest()
         existing_upload = find_existing_upload(image_hash)
         if existing_upload:
@@ -255,8 +274,8 @@ class LocalServerHandler(SimpleHTTPRequestHandler):
             })
             return
 
-        focus_x = parse_focus(form.getfirst("focusX"), 0.5)
-        focus_y = parse_focus(form.getfirst("focusY"), 0.5)
+        focus_x = parse_focus(form.get("focusX"), 0.5)
+        focus_y = parse_focus(form.get("focusY"), 0.5)
         metadata = extract_exif_metadata(image_bytes)
         paths = build_image_variants(image_bytes, photo_id, category, focus=(focus_x, focus_y))
         register_upload_hash(image_hash, {
