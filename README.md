@@ -96,6 +96,30 @@ start-local.bat
 - `admin.html` 需要通过 `localhost` / `127.0.0.1` 访问，不能依赖 `file://` 直接读取或保存项目 JSON
 - 如果只想纯静态预览，也可以运行 `python -m http.server 8000`，但后台无法直接保存文件，只能导出 JSON 手动替换
 
+### 2. 在局域网其他电脑访问后台
+
+如果需要让同一局域网内的另一台电脑访问后台，不能在另一台电脑上打开 `http://127.0.0.1:8000/admin.html`。`127.0.0.1` 永远表示“当前这台电脑自己”，不是运行项目的那台电脑。
+
+在运行项目的电脑上启动局域网服务：
+
+```bash
+python scripts/local_server.py --host 0.0.0.0 --port 8000
+```
+
+Windows 下也可以直接双击：
+
+```bat
+start-lan.bat
+```
+
+然后在另一台电脑上访问运行项目电脑的局域网 IP，例如：
+
+```text
+http://192.168.1.23:8000/admin.html
+```
+
+如果出现 404，通常是因为服务不是在项目根目录启动，或使用了普通 `python -m http.server` 并且当前目录下没有 `admin.html`。请优先使用 `scripts/local_server.py` 或 `start-lan.bat`。如果页面无法连接，检查两台电脑是否在同一局域网，并允许 Python 通过 Windows 防火墙。
+
 ## 页面与数据关系
 
 ### 首页 `index.html`

@@ -865,6 +865,8 @@ def main() -> None:
     server = ThreadingHTTPServer((args.host, args.port), LocalServerHandler)
     server.admin_password = args.admin_password
     print(f"Serving ImageExhibition at http://{args.host}:{args.port}/")
+    if args.host in {"0.0.0.0", "::"}:
+        print("LAN access enabled. Other computers must use this computer's LAN IP, not 127.0.0.1.")
     print("Local save API enabled for data/config.json and data/photos.json")
     if args.admin_password:
         print("Admin password is enabled. Default password: admin123")
