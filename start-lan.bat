@@ -57,6 +57,22 @@ if not exist "scripts\check_server.py" (
     exit /b 1
 )
 
+echo [INFO] Checking image upload dependency: Pillow
+%PYTHON_CMD% -c "import PIL" >nul 2>nul
+if errorlevel 1 (
+    echo [INFO] Pillow not found. Installing Pillow for image upload...
+    %PYTHON_CMD% -m pip install Pillow
+    if errorlevel 1 (
+        echo.
+        echo [ERROR] Pillow installation failed. Image upload needs Pillow.
+        echo [ERROR] Please run manually: %PYTHON_CMD% -m pip install Pillow
+        echo.
+        pause
+        popd >nul
+        exit /b 1
+    )
+)
+
 echo [INFO] Project root: %ROOT_DIR%
 echo [INFO] Server binding: http://%HOST%:%PORT%/
 echo [INFO] Local admin: %LOCAL_URL%

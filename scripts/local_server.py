@@ -599,7 +599,7 @@ def build_image_variants(image_bytes: bytes, photo_id: int, category: str, focus
     try:
         from PIL import Image, ImageFilter, ImageOps, UnidentifiedImageError
     except ImportError as error:
-        raise ValueError("Pillow is required for image upload. Run: python -m pip install Pillow") from error
+        raise ValueError("当前 Python 环境未安装 Pillow，图片上传不可用。请运行：python -m pip install Pillow，或重新双击 start-local.bat 自动安装。") from error
 
     from io import BytesIO
 

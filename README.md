@@ -369,7 +369,7 @@ python -m pip install Pillow
 - 在后台修改密码后，将以哈希形式保存到 `data/admin.json`，优先级高于启动参数默认密码
 - `backups/` 中保存的是本地自动备份，可按需清理或纳入自己的备份策略
 - `data/messages.json` 与 `data/image_hashes.json` 是运行时生成的数据文件
-- 图片上传需要安装 Pillow：`python -m pip install Pillow`
+- 图片上传需要安装 Pillow；`start-local.bat` 和 `start-lan.bat` 会自动检查并尝试安装，也可手动运行：`python -m pip install Pillow`
 - 通过普通静态服务启动时，后台导出的是下载文件，不会直接写回项目目录
 - 修改并保存 `data/config.json` 和 `data/photos.json` 后，刷新首页才会显示最新内容
 - 如果你修改了图片路径，需确保对应文件真实存在于项目目录中

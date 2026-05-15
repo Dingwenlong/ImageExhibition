@@ -848,7 +848,7 @@ const photosManager = {
             this.setBatchUploadStatus(`已生成 ${drafts.length} 条作品草稿，保存后同步到首页`);
             toast.success(`已生成 ${drafts.length} 条作品草稿`);
         } else {
-            this.setBatchUploadStatus('批量上传失败，请确认已用本地后端启动，并安装 Pillow');
+            this.setBatchUploadStatus(failures[0] || '批量上传失败，请确认已用本地后端启动');
         }
 
         if (failures.length) {
@@ -1219,7 +1219,7 @@ const photosManager = {
                 toast.success('图片已上传并自动填充路径');
             }
         } catch (error) {
-            this.setUploadStatus('上传失败，请确认已用本地后端启动，并安装 Pillow');
+            this.setUploadStatus(`上传失败：${error.message}`);
             toast.error(`图片上传失败：${error.message}`);
         } finally {
             uploadArea.classList.remove('is-uploading');
