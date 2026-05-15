@@ -39,9 +39,40 @@ if not exist "scripts\local_server.py" (
     exit /b 1
 )
 
+if not exist "admin.html" (
+    echo [ERROR] admin.html not found in project root: %ROOT_DIR%
+    echo [ERROR] Please run this script from a complete ImageExhibition project folder.
+    echo.
+    pause
+    popd >nul
+    exit /b 1
+)
+
+if not exist "scripts\check_server.py" (
+    echo [ERROR] Server checker not found: scripts\check_server.py
+    echo [ERROR] Please ensure the project is complete.
+    echo.
+    pause
+    popd >nul
+    exit /b 1
+)
+
 echo [INFO] Project root: %ROOT_DIR%
 echo [INFO] Server URL: http://%HOST%:%PORT%/
 echo [INFO] Admin password: admin123
+
+%PYTHON_CMD% scripts\check_server.py --host %HOST% --port %PORT% --mode preflight
+set "CHECK_RESULT=%ERRORLEVEL%"
+if "%CHECK_RESULT%"=="1" (
+    set "SERVER_ALREADY_RUNNING=1"
+    goto OPEN_URLS
+)
+if not "%CHECK_RESULT%"=="0" (
+    echo.
+    pause
+    popd >nul
+    exit /b 1
+)
 
 if "%DRY_RUN%"=="1" (
     echo [DRY_RUN] Would start: %PYTHON_CMD% scripts\local_server.py --host %HOST% --port %PORT%
@@ -53,10 +84,30 @@ if "%DRY_RUN%"=="1" (
 
 start "ImageExhibition Server" cmd /k "%PYTHON_CMD% scripts\local_server.py --host %HOST% --port %PORT%"
 timeout /t 2 /nobreak >nul
+%PYTHON_CMD% scripts\check_server.py --host %HOST% --port %PORT% --mode verify
+if errorlevel 1 (
+    echo.
+    pause
+    popd >nul
+    exit /b 1
+)
+
+:OPEN_URLS
+if "%DRY_RUN%"=="1" (
+    echo [DRY_RUN] Would open: %INDEX_URL%
+    echo [DRY_RUN] Would open: %ADMIN_URL%
+    popd >nul
+    exit /b 0
+)
+
 start "" "%INDEX_URL%"
 start "" "%ADMIN_URL%"
 
-echo [INFO] Local server started in a new window.
+if defined SERVER_ALREADY_RUNNING (
+    echo [INFO] Reused existing ImageExhibition server.
+) else (
+    echo [INFO] Local server started in a new window.
+)
 echo [INFO] Index: %INDEX_URL%
 echo [INFO] Admin: %ADMIN_URL%
 

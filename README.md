@@ -120,6 +120,8 @@ http://192.168.1.23:8000/admin.html
 
 如果出现 404，通常是因为服务不是在项目根目录启动，或使用了普通 `python -m http.server` 并且当前目录下没有 `admin.html`。请优先使用 `scripts/local_server.py` 或 `start-lan.bat`。如果页面无法连接，检查两台电脑是否在同一局域网，并允许 Python 通过 Windows 防火墙。
 
+`start-local.bat` 和 `start-lan.bat` 会在启动前检查 8000 端口。如果 8000 已经被旧服务占用，脚本会提示关闭旧服务窗口或修改脚本中的 `PORT`。这种情况常见表现是浏览器能打开 `127.0.0.1:8000`，但 `/admin.html` 返回 404，因为访问到的是另一个目录的服务。
+
 ## 页面与数据关系
 
 ### 首页 `index.html`
