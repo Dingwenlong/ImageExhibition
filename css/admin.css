@@ -627,8 +627,24 @@ body {
     margin: 1rem 0;
     padding: 0.875rem;
     background: var(--admin-bg);
-    border: 1px solid var(--admin-border);
+    border: 1px dashed var(--admin-border);
     border-radius: var(--admin-radius);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.batch-upload-bar:hover,
+.batch-upload-bar:focus-visible,
+.batch-upload-bar.is-dragging {
+    border-color: var(--admin-primary);
+    background: rgba(59, 130, 246, 0.05);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+    outline: none;
+}
+
+.batch-upload-bar.is-uploading {
+    cursor: wait;
+    opacity: 0.78;
 }
 
 .batch-upload-copy {

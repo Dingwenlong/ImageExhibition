@@ -7,12 +7,19 @@ from http.client import HTTPConnection
 from urllib.parse import quote
 
 
+REQUIRED_ADMIN_MARKERS = (
+    'data-section="maintenance"',
+    'data-section="messages"',
+    'id="batch-upload-area"',
+)
+
+
 def request(host: str, port: int, path: str) -> tuple[int, str]:
     connection = HTTPConnection(host, port, timeout=1.5)
     try:
         connection.request("GET", path)
         response = connection.getresponse()
-        body = response.read(2048).decode("utf-8", errors="replace")
+        body = response.read(128 * 1024).decode("utf-8", errors="replace")
         return response.status, body
     finally:
         connection.close()
@@ -43,15 +50,30 @@ def admin_status(host: str, port: int) -> int | None:
         return None
 
 
+def admin_version_ok(host: str, port: int) -> bool:
+    try:
+        status, body = request(host, port, "/admin.html")
+    except OSError:
+        return False
+
+    return status == 200 and all(marker in body for marker in REQUIRED_ADMIN_MARKERS)
+
+
 def preflight(host: str, port: int) -> int:
     status = admin_status(host, port)
     if status is None:
         print(f"[INFO] Port {port} is free.")
         return 0
 
-    if is_local_api(host, port) and status == 200:
+    if is_local_api(host, port) and status == 200 and admin_version_ok(host, port):
         print(f"[INFO] ImageExhibition server is already running at http://{host}:{port}/")
         return 1
+
+    if is_local_api(host, port) and status == 200:
+        print(f"[ERROR] Port {port} is running an older ImageExhibition admin page.")
+        print("[ERROR] The page is missing the Maintenance / Messages menus or the new upload area.")
+        print("[ERROR] Close the old server window, update/copy the latest project files, then run start-local.bat again.")
+        return 2
 
     print(f"[ERROR] Port {port} is already in use, but it does not look like this project server.")
     print(f"[ERROR] GET /admin.html returned HTTP {status}.")
@@ -70,6 +92,12 @@ def verify(host: str, port: int) -> int:
         print(f"[ERROR] /admin.html returned HTTP {status}.")
         print("[ERROR] Make sure start-local.bat is inside the project root with admin.html.")
         return 4
+
+    if not admin_version_ok(host, port):
+        print("[ERROR] /admin.html is an older version.")
+        print("[ERROR] Missing expected menus: Maintenance / Messages, or the new upload area.")
+        print("[ERROR] Close the old server window, update/copy the latest project files, then run start-local.bat again.")
+        return 5
 
     print(f"[INFO] Verified: http://{host}:{port}/admin.html")
     return 0

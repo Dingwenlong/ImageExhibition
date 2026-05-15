@@ -803,8 +803,12 @@ const photosManager = {
         }
     },
 
+    getImageFiles(files) {
+        return Array.from(files || []).filter((file) => file.type.startsWith('image/'));
+    },
+
     async batchUploadFiles(files) {
-        const imageFiles = Array.from(files || []).filter((file) => file.type.startsWith('image/'));
+        const imageFiles = this.getImageFiles(files);
 
         if (!imageFiles.length) {
             toast.error('请选择图片文件');
@@ -812,12 +816,14 @@ const photosManager = {
         }
 
         const uploadButton = document.getElementById('btn-batch-upload');
+        const uploadArea = document.getElementById('batch-upload-area');
         const category = document.getElementById('batch-photo-category').value;
         const photoIds = this.getBatchStartId(imageFiles.length);
         const drafts = [];
         const failures = [];
 
         uploadButton.disabled = true;
+        uploadArea.classList.add('is-uploading');
 
         for (let index = 0; index < imageFiles.length; index += 1) {
             const file = imageFiles[index];
@@ -851,6 +857,7 @@ const photosManager = {
         }
 
         uploadButton.disabled = false;
+        uploadArea.classList.remove('is-uploading');
     },
 
     renderList() {
@@ -1333,15 +1340,53 @@ const photosManager = {
     bindEvents() {
         document.getElementById('btn-add-photo').addEventListener('click', () => this.add());
         document.getElementById('btn-reload-photos').addEventListener('click', () => this.reloadFromProject(true));
-        document.getElementById('btn-batch-upload').addEventListener('click', () => {
-            document.getElementById('batch-photo-files').click();
+        const batchUploadArea = document.getElementById('batch-upload-area');
+        const batchUploadButton = document.getElementById('btn-batch-upload');
+        const batchFileInput = document.getElementById('batch-photo-files');
+        const batchCategorySelect = document.getElementById('batch-photo-category');
+
+        const openBatchFilePicker = () => batchFileInput.click();
+
+        batchUploadArea.addEventListener('click', openBatchFilePicker);
+        batchUploadArea.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openBatchFilePicker();
+            }
         });
-        document.getElementById('batch-photo-files').addEventListener('change', (event) => {
+        batchUploadButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            openBatchFilePicker();
+        });
+        batchCategorySelect.addEventListener('click', (event) => event.stopPropagation());
+        batchCategorySelect.addEventListener('keydown', (event) => event.stopPropagation());
+        batchFileInput.addEventListener('change', (event) => {
             const files = event.target.files;
             if (files.length) {
                 this.batchUploadFiles(files);
             }
             event.target.value = '';
+        });
+
+        batchUploadArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            batchUploadArea.classList.add('is-dragging');
+            event.dataTransfer.dropEffect = 'copy';
+        });
+
+        batchUploadArea.addEventListener('dragleave', (event) => {
+            if (!batchUploadArea.contains(event.relatedTarget)) {
+                batchUploadArea.classList.remove('is-dragging');
+            }
+        });
+
+        batchUploadArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            batchUploadArea.classList.remove('is-dragging');
+            const files = event.dataTransfer.files;
+            if (files.length) {
+                this.batchUploadFiles(files);
+            }
         });
         document.getElementById('modal-close').addEventListener('click', () => this.closeModal());
         document.getElementById('btn-modal-cancel').addEventListener('click', () => this.closeModal());

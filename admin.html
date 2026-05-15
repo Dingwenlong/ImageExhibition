@@ -241,11 +241,11 @@
                             </div>
                         </div>
                         <p class="card-desc">列表基于项目中的 <code>data/photos.json</code> 初始化。替换该文件后，可点击“从 JSON 重新读取”刷新后台列表。</p>
-                        <div class="batch-upload-bar">
+                        <div class="batch-upload-bar" id="batch-upload-area" role="button" tabindex="0" aria-label="点击或拖入多张图片批量上传作品">
                             <input type="file" id="batch-photo-files" accept="image/jpeg,image/png,image/webp" multiple hidden>
                             <div class="batch-upload-copy">
                                 <strong>批量上传作品</strong>
-                                <span id="batch-upload-status">选择多张图片生成作品草稿</span>
+                                <span id="batch-upload-status">点击或拖入多张图片生成作品草稿</span>
                             </div>
                             <select id="batch-photo-category" class="form-select batch-category-select" aria-label="批量上传默认分类">
                                 <option value="portrait">人像</option>
@@ -403,7 +403,7 @@
                                 </div>
                                 <div class="photo-upload-copy">
                                     <strong>选择 JPG、PNG 或 WebP</strong>
-                                    <span id="photo-upload-status">上传后会自动生成展示图、缩略图和 WebP 路径</span>
+                                    <span id="photo-upload-status">点击或拖入图片，自动生成展示图、缩略图和 WebP 路径</span>
                                 </div>
                                 <button type="button" class="btn btn-secondary btn-sm" id="btn-photo-upload">选择图片</button>
                             </div>
