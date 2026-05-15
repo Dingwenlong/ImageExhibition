@@ -1,13 +1,11 @@
 @echo off
-setlocal
+setlocal EnableExtensions EnableDelayedExpansion
 
 title ImageExhibition Local Launcher
 
 set "ROOT_DIR=%~dp0"
 set "PORT=8000"
 set "HOST=127.0.0.1"
-set "INDEX_URL=http://%HOST%:%PORT%/index.html"
-set "ADMIN_URL=http://%HOST%:%PORT%/admin.html"
 set "LOG_DIR=%ROOT_DIR%logs"
 set "LOG_FILE=%LOG_DIR%\start-local.log"
 
@@ -101,22 +99,46 @@ if errorlevel 1 (
 )
 
 echo [INFO] Project root: %ROOT_DIR%
-echo [INFO] Server URL: http://%HOST%:%PORT%/
 echo [INFO] Admin password: admin123
 
-%PYTHON_CMD% scripts\check_server.py --host %HOST% --port %PORT% --mode preflight >> "%LOG_FILE%" 2>&1
-set "CHECK_RESULT=%ERRORLEVEL%"
-if "%CHECK_RESULT%"=="1" (
-    set "SERVER_ALREADY_RUNNING=1"
-    goto OPEN_URLS
+set "SERVER_ALREADY_RUNNING="
+set "PORT_READY="
+
+for %%P in (8000 8001 8002 8003 8004 8005 8006 8007 8008 8009 8010) do (
+    set "PORT=%%P"
+    call :SET_URLS
+    echo [INFO] Checking port !PORT!...
+    echo Checking port !PORT!... >> "%LOG_FILE%"
+    %PYTHON_CMD% scripts\check_server.py --host %HOST% --port !PORT! --mode preflight >> "%LOG_FILE%" 2>&1
+    set "CHECK_RESULT=!ERRORLEVEL!"
+    if "!CHECK_RESULT!"=="1" (
+        set "SERVER_ALREADY_RUNNING=1"
+        set "PORT_READY=1"
+        goto PORT_SELECTED
+    )
+    if "!CHECK_RESULT!"=="0" (
+        set "PORT_READY=1"
+        goto PORT_SELECTED
+    )
+    echo [INFO] Port !PORT! is busy or has an old server, trying next port...
 )
-if not "%CHECK_RESULT%"=="0" (
+
+:PORT_SELECTED
+if not defined PORT_READY (
+    echo.
+    echo [ERROR] Could not find a usable port from 8000 to 8010.
+    echo [ERROR] Close old ImageExhibition server windows, then run start-local.bat again.
+    echo.
     type "%LOG_FILE%"
     echo.
     pause
     popd >nul
     exit /b 1
 )
+
+call :SET_URLS
+echo [INFO] Server URL: http://%HOST%:%PORT%/
+echo Selected port: %PORT% >> "%LOG_FILE%"
 
 if "%DRY_RUN%"=="1" (
     echo [DRY_RUN] Would start: %PYTHON_CMD% scripts\local_server.py --host %HOST% --port %PORT%
@@ -179,4 +201,9 @@ echo [INFO] This launcher window can be closed. The server window must stay open
 timeout /t 8 /nobreak >nul
 
 popd >nul
+exit /b 0
+
+:SET_URLS
+set "INDEX_URL=http://%HOST%:%PORT%/index.html"
+set "ADMIN_URL=http://%HOST%:%PORT%/admin.html"
 exit /b 0
