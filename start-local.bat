@@ -1,13 +1,31 @@
 @echo off
 setlocal
 
+title ImageExhibition Local Launcher
+
 set "ROOT_DIR=%~dp0"
 set "PORT=8000"
 set "HOST=127.0.0.1"
 set "INDEX_URL=http://%HOST%:%PORT%/index.html"
 set "ADMIN_URL=http://%HOST%:%PORT%/admin.html"
+set "LOG_DIR=%ROOT_DIR%logs"
+set "LOG_FILE=%LOG_DIR%\start-local.log"
 
 pushd "%ROOT_DIR%" >nul
+
+if not exist "%LOG_DIR%" mkdir "%LOG_DIR%" >nul 2>nul
+echo ================================================== > "%LOG_FILE%"
+echo ImageExhibition start-local.bat >> "%LOG_FILE%"
+echo Time: %DATE% %TIME% >> "%LOG_FILE%"
+echo Project root: %ROOT_DIR% >> "%LOG_FILE%"
+
+echo.
+echo ==================================================
+echo   ImageExhibition local launcher
+echo ==================================================
+echo [INFO] Project root: %ROOT_DIR%
+echo [INFO] Log file: %LOG_FILE%
+echo.
 
 set "PYTHON_CMD="
 python -c "1" >nul 2>nul
@@ -29,6 +47,8 @@ if not defined PYTHON_CMD (
     popd >nul
     exit /b 1
 )
+echo [INFO] Python command: %PYTHON_CMD%
+echo Python command: %PYTHON_CMD% >> "%LOG_FILE%"
 
 if not exist "scripts\local_server.py" (
     echo [ERROR] Server script not found: scripts\local_server.py
@@ -61,29 +81,37 @@ echo [INFO] Checking image upload dependency: Pillow
 %PYTHON_CMD% -c "import PIL" >nul 2>nul
 if errorlevel 1 (
     echo [INFO] Pillow not found. Installing Pillow for image upload...
-    %PYTHON_CMD% -m pip install Pillow
+    echo Installing Pillow... >> "%LOG_FILE%"
+    %PYTHON_CMD% -m pip install Pillow >> "%LOG_FILE%" 2>&1
     if errorlevel 1 (
         echo.
         echo [ERROR] Pillow installation failed. Image upload needs Pillow.
         echo [ERROR] Please run manually: %PYTHON_CMD% -m pip install Pillow
+        echo [ERROR] See log: %LOG_FILE%
         echo.
         pause
         popd >nul
         exit /b 1
     )
+    echo [INFO] Pillow installed.
+    echo Pillow installed. >> "%LOG_FILE%"
+) else (
+    echo [INFO] Pillow is ready.
+    echo Pillow is ready. >> "%LOG_FILE%"
 )
 
 echo [INFO] Project root: %ROOT_DIR%
 echo [INFO] Server URL: http://%HOST%:%PORT%/
 echo [INFO] Admin password: admin123
 
-%PYTHON_CMD% scripts\check_server.py --host %HOST% --port %PORT% --mode preflight
+%PYTHON_CMD% scripts\check_server.py --host %HOST% --port %PORT% --mode preflight >> "%LOG_FILE%" 2>&1
 set "CHECK_RESULT=%ERRORLEVEL%"
 if "%CHECK_RESULT%"=="1" (
     set "SERVER_ALREADY_RUNNING=1"
     goto OPEN_URLS
 )
 if not "%CHECK_RESULT%"=="0" (
+    type "%LOG_FILE%"
     echo.
     pause
     popd >nul
@@ -99,9 +127,28 @@ if "%DRY_RUN%"=="1" (
 )
 
 start "ImageExhibition Server" cmd /k "%PYTHON_CMD% scripts\local_server.py --host %HOST% --port %PORT%"
-timeout /t 2 /nobreak >nul
-%PYTHON_CMD% scripts\check_server.py --host %HOST% --port %PORT% --mode verify
-if errorlevel 1 (
+echo [INFO] Server window opened. Waiting for service...
+echo Server window opened. Waiting for service... >> "%LOG_FILE%"
+
+set "VERIFY_OK="
+for /l %%I in (1,1,20) do (
+    timeout /t 1 /nobreak >nul
+    %PYTHON_CMD% scripts\check_server.py --host %HOST% --port %PORT% --mode verify >> "%LOG_FILE%" 2>&1
+    if not errorlevel 1 (
+        set "VERIFY_OK=1"
+        goto VERIFIED
+    )
+    echo [INFO] Waiting... %%I/20
+)
+
+:VERIFIED
+if not defined VERIFY_OK (
+    echo.
+    echo [ERROR] Server did not become ready.
+    echo [ERROR] Check the server window and log file:
+    echo [ERROR] %LOG_FILE%
+    echo.
+    type "%LOG_FILE%"
     echo.
     pause
     popd >nul
@@ -126,6 +173,10 @@ if defined SERVER_ALREADY_RUNNING (
 )
 echo [INFO] Index: %INDEX_URL%
 echo [INFO] Admin: %ADMIN_URL%
+echo [INFO] If the browser did not open, copy the Admin URL above.
+echo.
+echo [INFO] This launcher window can be closed. The server window must stay open.
+timeout /t 8 /nobreak >nul
 
 popd >nul
 exit /b 0
